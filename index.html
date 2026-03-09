@@ -337,62 +337,40 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
 .tl-pts strong { color: var(--navy); font-weight: 600; }
 
 /* ════════════════════════════
-   SCENE 4 — PROJECTS (horizontal feel)
+   SCENE 4 — PROJECTS (grid)
 ════════════════════════════ */
-#scene-projects { background: var(--cream); flex-direction: column; }
+#scene-projects { background: var(--cream); }
 .proj-scene-inner {
-  width: 100%; max-width: 1160px; padding: 0 4rem;
+  max-width: 1160px; padding: 4.5rem 4rem 3rem;
 }
-.proj-track-wrap {
-  overflow: hidden; margin-top: 2.5rem; position: relative;
-}
-.proj-track {
-  display: flex; gap: 1.5rem;
-  transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
-  will-change: transform;
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+  margin-top: 2rem;
 }
 .proj-card {
-  min-width: 340px; background: var(--white);
-  border: 1px solid var(--border); border-radius: 18px;
-  padding: 2.5rem; flex-shrink: 0;
-  position: relative; overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;
+  background: var(--white);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 1.8rem; display: flex; flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s;
 }
-.proj-card:hover {
-  transform: perspective(800px) rotateX(-4deg) rotateY(3deg) translateY(-6px);
-  box-shadow: 0 28px 60px rgba(9,25,41,0.15);
-}
+.proj-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(9,25,41,0.1); }
 .proj-num {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 4rem; font-weight: 700;
-  color: var(--border); line-height: 1; margin-bottom: 0.8rem;
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--border); line-height: 1; margin-bottom: 0.5rem;
 }
 .proj-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem; font-weight: 600; color: var(--navy); line-height: 1.25; margin-bottom: 0.7rem;
+  font-size: 1rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 0.5rem;
 }
-.proj-desc {
-  font-size: 0.8rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem;
-}
+.proj-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 1rem; }
 .proj-result {
-  font-family: 'Fira Code', monospace; font-size: 0.65rem;
+  font-family: 'Fira Code', monospace; font-size: 0.6rem;
   color: var(--teal); border-top: 1px solid var(--border);
-  padding-top: 0.9rem; letter-spacing: 0.04em;
+  padding-top: 0.75rem; letter-spacing: 0.04em;
 }
-.proj-nav {
-  display: flex; align-items: center; gap: 1.2rem; margin-top: 2rem;
-}
-.proj-btn {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--navy); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s, transform 0.2s;
-  color: white;
-}
-.proj-btn:hover { background: var(--gold); transform: scale(1.08); }
-.proj-dots { display: flex; gap: 0.5rem; }
-.proj-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
-.proj-dot.active { background: var(--gold); transform: scale(1.3); }
 
 /* ════════════════════════════
    SCENE 5 — CHARTS
@@ -526,12 +504,22 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
 }
 .nav-hire:hover { background: var(--gold2); transform: translateY(-1px); }
 
-/* ── Scene backgrounds ── */
+/* ── Tall scenes: fixed 100vh, content scrolls inside ── */
 #scene-experience, #scene-projects, #scene-skills, #scene-certs {
-  height: auto; min-height: 100vh;
-  scroll-snap-align: start;
+  height: 100vh;
+  overflow: hidden;
   display: flex; align-items: flex-start; justify-content: center;
 }
+.exp-scene-inner, .proj-scene-inner, .skills-scene-inner, .certs-scene-inner {
+  overflow-y: auto;
+  max-height: 100vh;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.exp-scene-inner::-webkit-scrollbar,
+.proj-scene-inner::-webkit-scrollbar,
+.skills-scene-inner::-webkit-scrollbar,
+.certs-scene-inner::-webkit-scrollbar { display: none; }
 
 @media (max-width: 900px) {
   #topnav { padding: 1rem 1.5rem; }
@@ -543,7 +531,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
   .stats-layout, .charts-row, .skills-row { grid-template-columns: 1fr; }
   .impact-grid, .certs-grid { grid-template-columns: 1fr 1fr; }
   .timeline-h { grid-template-columns: 1fr; }
-  .proj-card { min-width: 280px; }
+  .proj-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
   .impact-grid, .certs-grid { grid-template-columns: 1fr; }
@@ -563,7 +551,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
     <a href="#" onclick="goTo(6)">Skills</a>
     <a href="#" onclick="goTo(8)">Contact</a>
   </div>
-  <a href="mailto:saad.naveed79@gmail.com" class="nav-hire">Hire Me</a>
+  <a href="/cdn-cgi/l/email-protection#760517171258181700131312414f36111b171f1a5815191b" class="nav-hire">Hire Me</a>
 </nav>
 
 <!-- PROGRESS DOTS -->
@@ -726,64 +714,44 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
   <!-- SCENE 4: PROJECTS -->
   <section class="scene" id="scene-projects" data-scene="4">
     <div class="proj-scene-inner">
-      <div class="scene-inner" style="padding:0">
-        <div class="eyebrow" style="color:var(--gold)">Selected Work</div>
-        <h2 class="display-title" style="color:var(--navy)">Projects &amp; Deliverables</h2>
-      </div>
-      <div class="proj-track-wrap">
-        <div class="proj-track" id="projTrack">
-          <div class="proj-card">
-            <div class="proj-num">01</div>
-            <div class="proj-title">GL Forecasting Framework — STC</div>
-            <div class="proj-desc">Production-grade general ledger forecasting with leak-safe training pipelines, horizon stability checks, and explainable outputs for executive planning cycles.</div>
-            <div class="proj-result">→ Finance governance compliant · Qlik · Time Series</div>
-          </div>
-          <div class="proj-card">
-            <div class="proj-num">02</div>
-            <div class="proj-title">Recommendation Engine — Lebara Mobile</div>
-            <div class="proj-desc">LightFM + collaborative filtering system for personalised product recommendations. End-to-end pipeline from ingestion through feature engineering to live serving.</div>
-            <div class="proj-result">→ +15% CTR · +10% User Engagement</div>
-          </div>
-          <div class="proj-card">
-            <div class="proj-num">03</div>
-            <div class="proj-title">Loan Default Prediction — easypaisa</div>
-            <div class="proj-desc">End-to-end credit risk model for Telenor Microfinance Bank. Addressed model bias for fair lending. Integrated with multidisciplinary risk and analytics teams.</div>
-            <div class="proj-result">→ 92% Accuracy · Reduced Financial Losses</div>
-          </div>
-          <div class="proj-card">
-            <div class="proj-num">04</div>
-            <div class="proj-title">Micro-Loan Credit Programme — Lebara</div>
-            <div class="proj-desc">Full programme: ML credit scoring, regulatory compliance framework, automated disbursement and repayment, and company-wide rollout strategy.</div>
-            <div class="proj-result">→ +50% Portfolio Size · 20% Ops Efficiency</div>
-          </div>
-          <div class="proj-card">
-            <div class="proj-num">05</div>
-            <div class="proj-title">Fraudulent Behaviour Analysis — Absoluit</div>
-            <div class="proj-desc">Custom algorithm detecting fraudulent driver behaviour via acceleration, braking, and speed variance metrics. Real-time predictive flagging model.</div>
-            <div class="proj-result">→ 65% Reduction in Fraudulent Sales</div>
-          </div>
-          <div class="proj-card">
-            <div class="proj-num">06</div>
-            <div class="proj-title">Customer Segmentation Suite</div>
-            <div class="proj-desc">Unsupervised clustering deployments across Lebara and Absoluit — demographic, behavioural, and purchase-history segmentation for targeted marketing.</div>
-            <div class="proj-result">→ +30% Sales · Higher Retention Rates</div>
-          </div>
+      <div class="eyebrow" style="color:var(--gold)">Selected Work</div>
+      <h2 class="display-title" style="color:var(--navy)">Projects &amp; Deliverables</h2>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <div class="proj-num">01</div>
+          <div class="proj-title">GL Forecasting Framework — STC</div>
+          <div class="proj-desc">Production-grade GL forecasting with leak-safe pipelines, horizon stability checks, and explainable outputs for executive planning.</div>
+          <div class="proj-result">→ Finance governance compliant · Qlik · Time Series</div>
         </div>
-      </div>
-      <div class="proj-nav">
-        <button class="proj-btn" id="projPrev" onclick="slideProj(-1)">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="proj-btn" id="projNext" onclick="slideProj(1)">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="proj-dots" id="projDots">
-          <div class="proj-dot active"></div>
-          <div class="proj-dot"></div>
-          <div class="proj-dot"></div>
-          <div class="proj-dot"></div>
-          <div class="proj-dot"></div>
-          <div class="proj-dot"></div>
+        <div class="proj-card">
+          <div class="proj-num">02</div>
+          <div class="proj-title">Recommendation Engine — Lebara Mobile</div>
+          <div class="proj-desc">LightFM + collaborative filtering for personalised recommendations. End-to-end pipeline from ingestion to live serving.</div>
+          <div class="proj-result">→ +15% CTR · +10% User Engagement</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">03</div>
+          <div class="proj-title">Loan Default Prediction — easypaisa</div>
+          <div class="proj-desc">End-to-end credit risk model for Telenor Microfinance Bank. Addressed model bias for fair lending outcomes.</div>
+          <div class="proj-result">→ 92% Accuracy · Reduced Financial Losses</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">04</div>
+          <div class="proj-title">Micro-Loan Credit Programme — Lebara</div>
+          <div class="proj-desc">ML credit scoring, compliance framework, automated disbursement and repayment, and company-wide rollout strategy.</div>
+          <div class="proj-result">→ +50% Portfolio Size · 20% Ops Efficiency</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">05</div>
+          <div class="proj-title">Fraudulent Behaviour Analysis — Absoluit</div>
+          <div class="proj-desc">Custom algorithm detecting fraudulent driver behaviour via acceleration, braking, and speed variance metrics.</div>
+          <div class="proj-result">→ 65% Reduction in Fraudulent Sales</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">06</div>
+          <div class="proj-title">Customer Segmentation Suite</div>
+          <div class="proj-desc">Unsupervised clustering across Lebara and Absoluit — demographic, behavioural, and purchase-history segmentation.</div>
+          <div class="proj-result">→ +30% Sales · Higher Retention Rates</div>
         </div>
       </div>
     </div>
@@ -866,7 +834,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
       <h2 class="display-title">Open to Senior<br/><em style="font-style:italic;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Analytics Roles</em></h2>
       <p>Finance analytics, ML engineering, or data leadership — let's talk about what you're building.</p>
       <div class="c-links">
-        <a href="mailto:saad.naveed79@gmail.com" class="c-btn c-btn-gold">saad.naveed79@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#2c5f4d4d4802424d5a4949481b156c4b414d4540024f4341" class="c-btn c-btn-gold"><span class="__cf_email__" data-cfemail="f380929297dd9d9285969697c4cab3949e929a9fdd909c9e">[email&#160;protected]</span></a>
         <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" class="c-btn c-btn-out">LinkedIn →</a>
         <a href="https://github.com/possiblecode" target="_blank" class="c-btn c-btn-out">GitHub →</a>
       </div>
@@ -876,7 +844,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
 
 </div><!-- /snap-container -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── Scene tracking ── */
 const container = document.getElementById('snap-container');
 const scenes = document.querySelectorAll('.scene');
@@ -932,19 +900,6 @@ function goTo(idx) {
   return false;
 }
 
-/* ── Project carousel ── */
-let projIdx = 0;
-const projCards = document.querySelectorAll('.proj-card');
-const projTotal = projCards.length;
-const projDots = document.querySelectorAll('.proj-dot');
-
-function slideProj(dir) {
-  projIdx = Math.max(0, Math.min(projTotal - 1, projIdx + dir));
-  const card = projCards[0];
-  const cardW = card.offsetWidth + 24; // gap=1.5rem=24px
-  document.getElementById('projTrack').style.transform = `translateX(${-projIdx * cardW}px)`;
-  projDots.forEach((d, i) => d.classList.toggle('active', i === projIdx));
-}
 
 /* ── Animated counters ── */
 function animateCounters() {
@@ -1014,7 +969,7 @@ function buildCharts() {
       plugins: { legend: { display: false } },
       scales: { r: { min: 60, max: 100, ticks: { display: false },
         grid: { color: 'rgba(9,25,41,0.1)' }, angleLines: { color: 'rgba(9,25,41,0.08)' },
-        pointLabels: { color: '#7A7065', font: { family: "'Plus Jakarta Sans'", size: 9.5 } } } } }
+        pointLabels: { color: '#7A7065', font: { family: "'Plus Jakarta Sans'", size: 9.5 } }  } } }
   });
 }
 
