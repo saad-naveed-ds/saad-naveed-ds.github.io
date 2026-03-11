@@ -3,29 +3,34 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Saad Naveed — Senior Data Scientist</title>
+<title>Saad Naveed — Senior Data Scientist | STC Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 :root {
-  --cream:  #F5F0E8;
-  --navy:   #091929;
-  --navy2:  #122840;
-  --gold:   #C49A50;
-  --gold2:  #E0BA7A;
-  --teal:   #0E6B70;
-  --white:  #FFFFFF;
-  --muted:  #7A7065;
-  --border: #D9D0C2;
+  --bg-dark: #0B0E14;      /* Obsidian Base */
+  --bg-card: #151921;      /* Elevated Layer */
+  --accent-blue: #3B82F6;  /* Logic/Trust */
+  --accent-emerald: #10B981; /* Growth/Success */
+  --text-main: #F8FAFC;    /* High Contrast White */
+  --text-dim: #94A3B8;     /* Slate Grey */
+  --border: rgba(255, 255, 255, 0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── THE KEY: Full-screen snap container ── */
-html, body { width: 100%; height: 100%; overflow: hidden; }
+html, body { 
+    width: 100%; height: 100%; 
+    background: var(--bg-dark); 
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden; 
+}
 
+/* ── SNAP CONTAINER ── */
 #snap-container {
   width: 100%; height: 100vh;
   overflow-y: scroll;
@@ -33,947 +38,290 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
+#snap-container::-webkit-scrollbar { width: 4px; }
+#snap-container::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 10px; }
 
-/* Hide scrollbar but keep functionality */
-#snap-container::-webkit-scrollbar { width: 3px; }
-#snap-container::-webkit-scrollbar-track { background: var(--navy); }
-#snap-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
-
-/* ── Each scene snaps to full viewport ── */
 .scene {
   width: 100%; height: 100vh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
 }
 
-/* ── PROGRESS DOTS ── */
+/* ── NAVIGATION ── */
+#topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: rgba(11, 14, 20, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
+.nav-logo span { color: var(--accent-blue); }
+
 #progress-nav {
-  position: fixed;
-  right: 2.5rem; top: 50%;
-  transform: translateY(-50%);
-  z-index: 999;
-  display: flex; flex-direction: column; gap: 0.8rem;
+  position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
+  z-index: 999; display: flex; flex-direction: column; gap: 0.8rem;
 }
 .pdot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(196,154,80,0.25);
-  border: 1px solid var(--gold);
-  cursor: pointer;
-  transition: all 0.3s;
+  background: rgba(255,255,255,0.1); border: 1px solid var(--text-dim);
+  cursor: pointer; transition: 0.3s;
 }
-.pdot.active { background: var(--gold); transform: scale(1.4); }
+.pdot.active { background: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.4); }
 
-/* ── SCENE CONTENT ANIMATION ── */
+/* ── CONTENT ANIMATIONS ── */
 .scene-inner {
-  opacity: 0;
-  transform: scale(0.92) translateY(30px);
-  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
-              transform 0.75s cubic-bezier(0.22,1,0.36,1);
-  width: 100%; max-width: 1160px;
-  padding: 0 4rem;
+  opacity: 0; transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 100%; max-width: 1160px; padding: 0 4rem;
 }
-.scene.active .scene-inner {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-.scene.exit-up .scene-inner {
-  opacity: 0;
-  transform: scale(1.08) translateY(-40px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
+.scene.active .scene-inner { opacity: 1; transform: translateY(0); }
 
-/* ── SHARED TYPOGRAPHY ── */
+/* ── TYPOGRAPHY ── */
 .eyebrow {
   font-family: 'Fira Code', monospace;
-  font-size: 0.68rem; letter-spacing: 0.16em;
-  text-transform: uppercase; margin-bottom: 1.2rem;
-  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.7rem; color: var(--accent-blue);
+  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 0.6rem;
 }
-.eyebrow::before { content: '//'; opacity: 0.4; }
-
 .display-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 600; line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800; line-height: 1.1; letter-spacing: -0.04em;
 }
-.body-text {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.92rem; line-height: 1.75; font-weight: 300;
+.display-title span { color: var(--accent-blue); }
+
+/* ── HERO ── */
+#scene-hero { background: radial-gradient(circle at 50% 50%, #1a2333 0%, var(--bg-dark) 80%); }
+.hero-name { font-size: clamp(4rem, 11vw, 9rem); font-weight: 800; line-height: 0.9; }
+.hero-name strong { 
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cdmp-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--accent-blue); border-radius: 4px;
+    font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--accent-blue);
+    margin-bottom: 2rem;
 }
 
-/* ════════════════════════════
-   SCENE 0 — HERO
-════════════════════════════ */
-#scene-hero {
-  background: var(--navy);
-  flex-direction: column;
-}
-.hero-bg-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(196,154,80,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196,154,80,0.05) 1px, transparent 1px);
-  background-size: 70px 70px;
-  animation: gridDrift 20s linear infinite;
-}
-@keyframes gridDrift {
-  from { background-position: 0 0; }
-  to   { background-position: 70px 70px; }
-}
-.hero-glow {
-  position: absolute;
-  width: 700px; height: 700px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,154,80,0.08) 0%, transparent 70%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  animation: pulse 6s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.15);} }
-
-.hero-scene-inner {
-  position: relative; z-index: 2;
-  text-align: center;
-  opacity: 0; transform: scale(0.9);
-  transition: opacity 1s ease, transform 1s cubic-bezier(0.22,1,0.36,1);
-}
-.hero-scene-inner.active { opacity: 1; transform: scale(1); }
-
-.hero-eyebrow {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.7rem; letter-spacing: 0.2em;
-  color: var(--gold); text-transform: uppercase;
-  display: flex; align-items: center; justify-content: center; gap: 0.8rem;
-  margin-bottom: 2rem;
-}
-.hero-eyebrow::before, .hero-eyebrow::after {
-  content: ''; width: 40px; height: 1px; background: var(--gold); opacity: 0.5;
-}
-.hero-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(5rem, 13vw, 10.5rem);
-  font-weight: 300; color: var(--white);
-  line-height: 0.88; letter-spacing: -0.025em;
-}
-.hero-name strong {
-  font-weight: 700; display: block;
-  background: linear-gradient(140deg, var(--gold2), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.hero-sub {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  margin-top: 2rem; font-size: 1rem;
-  color: rgba(255,255,255,0.45); font-weight: 300;
-  max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.7;
-}
-.hero-pills {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
-  margin-top: 1.8rem;
-}
-.pill {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.65rem; padding: 0.3rem 0.9rem;
-  border: 1px solid rgba(196,154,80,0.35);
-  border-radius: 100px; color: rgba(255,255,255,0.5);
-  letter-spacing: 0.05em;
-}
-
-.scroll-cue {
-  position: absolute; bottom: 2.5rem; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  color: rgba(255,255,255,0.25);
-  font-family: 'Fira Code', monospace; font-size: 0.6rem; letter-spacing: 0.12em;
-  animation: scrollBob 2.5s ease-in-out infinite;
-}
-@keyframes scrollBob { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
-.scroll-cue svg { animation: arrowFade 2.5s ease-in-out infinite; }
-@keyframes arrowFade { 0%,100%{opacity:0.2;} 50%{opacity:0.8;} }
-
-/* ════════════════════════════
-   SCENE 1 — STATS
-════════════════════════════ */
-#scene-stats { background: var(--cream); }
-.stats-layout {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 2rem; align-items: center;
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.stats-left {}
-.stats-left .eyebrow { color: var(--gold); }
-.stats-left .display-title { color: var(--navy); margin-bottom: 1.2rem; }
-.stats-left p { color: var(--muted); max-width: 400px; }
-.stats-right {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-}
-.stat-box {
-  background: var(--white);
-  padding: 2.5rem 2rem;
-  display: flex; flex-direction: column;
-  position: relative;
-}
-.stat-box::after {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px; background: var(--gold); opacity: 0;
-  transition: opacity 0.3s;
-}
-.stat-box:hover::after { opacity: 1; }
-.stat-n {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.4rem; font-weight: 700; color: var(--navy); line-height: 1;
-}
-.stat-n sup { font-size: 1.4rem; color: var(--gold); }
-.stat-l {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.62rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.4rem;
-}
-
-/* ════════════════════════════
-   SCENE 2 — IMPACT NUMBERS
-════════════════════════════ */
-#scene-impact { background: var(--navy); }
-.impact-scene-inner {
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.impact-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden;
-  margin-top: 3rem;
-}
+/* ── IMPACT GRID ── */
+.impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 3rem; }
 .impact-box {
-  background: var(--navy2);
-  padding: 2.5rem 2.2rem;
-  position: relative; overflow: hidden;
-  transition: background 0.3s;
+  background: var(--bg-card); padding: 2rem; border-radius: 12px;
+  border: 1px solid var(--border); transition: 0.3s;
 }
-.impact-box:hover { background: #1a3555; }
-.impact-box::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px;
-}
-.ib-gold::before { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
-.ib-teal::before { background: linear-gradient(90deg, var(--teal), #18a0a7); }
-.impact-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.8rem; font-weight: 700; line-height: 1;
-  background: linear-gradient(140deg, var(--gold2), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.impact-num.teal {
-  background: linear-gradient(140deg, #18c0c8, var(--teal));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.impact-num sup { font-size: 1.5rem; }
-.impact-label {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.83rem; color: rgba(255,255,255,0.55);
-  line-height: 1.5; margin-top: 0.5rem;
-}
-.impact-co {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.6rem; color: var(--gold); opacity: 0.7;
-  text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.8rem;
-}
+.impact-box:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+.impact-num { font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
+.impact-num span { font-size: 1.5rem; color: var(--accent-emerald); }
 
-/* ════════════════════════════
-   SCENE 3 — EXPERIENCE (timeline)
-════════════════════════════ */
-#scene-experience { background: var(--white); align-items: flex-start; overflow-y: auto; scroll-snap-align: start; }
-#scene-experience::-webkit-scrollbar { display: none; }
-.exp-scene-inner {
-  width: 100%; max-width: 1160px; padding: 5rem 4rem;
-  opacity: 0; transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.scene.active .exp-scene-inner { opacity: 1; transform: translateY(0); }
-
-.timeline-h {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
+/* ── EXPERIENCE CARDS ── */
+.timeline-h { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 .tl-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 1.8rem;
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative; overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.8rem; position: relative;
 }
 .tl-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; background: var(--gold);
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-blue);
 }
-.tl-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(9,25,41,0.1); }
-.tl-period {
-  font-family: 'Fira Code', monospace; font-size: 0.62rem;
-  color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.3rem;
-}
-.tl-role {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem; font-weight: 600; color: var(--navy); line-height: 1.2; margin-bottom: 0.15rem;
-}
-.tl-co { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.9rem; }
-.tl-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.9rem; }
-.tl-tag {
-  font-size: 0.62rem; font-weight: 500; padding: 0.2rem 0.6rem;
-  background: var(--navy); color: rgba(255,255,255,0.7); border-radius: 100px;
-}
-.tl-tag.g { background: rgba(196,154,80,0.1); color: var(--gold); }
-.tl-tag.t { background: rgba(14,107,112,0.1); color: var(--teal); }
-.tl-pts { list-style: none; }
-.tl-pts li {
-  font-size: 0.8rem; color: var(--muted); padding-left: 1rem;
-  position: relative; line-height: 1.6; margin-bottom: 0.3rem;
-}
-.tl-pts li::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-size: 0.7rem; }
-.tl-pts strong { color: var(--navy); font-weight: 600; }
+.tl-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+.tl-co { font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--accent-emerald); margin-bottom: 1rem; }
+.tl-pts { list-style: none; font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
+.tl-pts li::before { content: '→ '; color: var(--accent-blue); }
 
-/* ════════════════════════════
-   SCENE 4 — PROJECTS (grid)
-════════════════════════════ */
-#scene-projects { background: var(--cream); }
-.proj-scene-inner {
-  max-width: 1160px; padding: 4.5rem 4rem 3rem;
-}
-.proj-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.1rem;
-  margin-top: 2rem;
-}
-.proj-card {
-  background: var(--white);
-  border: 1px solid var(--border); border-radius: 14px;
-  padding: 1.8rem; display: flex; flex-direction: column;
-  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s;
-}
-.proj-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(9,25,41,0.1); }
-.proj-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem; font-weight: 700;
-  color: var(--border); line-height: 1; margin-bottom: 0.5rem;
-}
-.proj-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 0.5rem;
-}
-.proj-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 1rem; }
-.proj-result {
-  font-family: 'Fira Code', monospace; font-size: 0.6rem;
-  color: var(--teal); border-top: 1px solid var(--border);
-  padding-top: 0.75rem; letter-spacing: 0.04em;
-}
-
-/* ════════════════════════════
-   SCENE 5 — CHARTS
-════════════════════════════ */
-#scene-charts { background: var(--navy); }
-.charts-scene-inner {
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.charts-row {
-  display: grid; grid-template-columns: 1.15fr 1fr;
-  gap: 2rem; margin-top: 3rem;
-}
-.chart-box {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px; padding: 2rem;
-}
-.chart-label {
-  font-family: 'Fira Code', monospace; font-size: 0.62rem;
-  color: rgba(255,255,255,0.35); letter-spacing: 0.1em;
-  text-transform: uppercase; margin-bottom: 1.5rem;
-}
-.chart-box canvas { max-height: 270px; }
-
-/* ════════════════════════════
-   SCENE 6 — SKILLS
-════════════════════════════ */
-#scene-skills { background: var(--white); }
-.skills-scene-inner {
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.skills-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4rem; margin-top: 3rem; align-items: start;
-}
-.skill-block { }
-.sg-title {
-  font-family: 'Fira Code', monospace; font-size: 0.62rem;
-  color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
-  margin-bottom: 1rem; margin-top: 1.8rem;
-}
-.sg-title:first-child { margin-top: 0; }
-.s-row { margin-bottom: 1.5rem; }
-.s-head { display: flex; justify-content: space-between; margin-bottom: 0.45rem; }
-.s-name { font-size: 0.8rem; font-weight: 500; color: var(--navy); }
-.s-pct { font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--gold); }
-.s-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.s-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); width: 0; border-radius: 2px; transition: width 1.3s cubic-bezier(0.22,1,0.36,1); }
-.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.chip {
-  font-size: 0.7rem; padding: 0.28rem 0.7rem;
-  background: var(--cream); border: 1px solid var(--border);
-  border-radius: 100px; color: var(--navy); transition: all 0.2s;
-}
-.chip:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
-
-/* ════════════════════════════
-   SCENE 7 — CERTIFICATIONS
-════════════════════════════ */
-#scene-certs { background: var(--cream); }
-.certs-scene-inner {
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.certs-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem; margin-top: 3rem;
-}
-.cert-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 14px; padding: 1.8rem;
-  display: flex; align-items: flex-start; gap: 1rem;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.cert-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(9,25,41,0.1); }
-.cert-ico { width: 40px; min-width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-.cert-name { font-size: 0.85rem; font-weight: 500; color: var(--navy); line-height: 1.35; }
-.cert-org { font-family: 'Fira Code', monospace; font-size: 0.6rem; color: var(--muted); margin-top: 0.3rem; }
-
-/* ════════════════════════════
-   SCENE 8 — CONTACT
-════════════════════════════ */
-#scene-contact { background: var(--navy); flex-direction: column; text-align: center; }
-.contact-inner {
-  max-width: 680px; padding: 0 2rem;
-  opacity: 0; transform: scale(0.92);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
-}
-.scene.active .contact-inner { opacity: 1; transform: scale(1); }
-.contact-inner .eyebrow { color: var(--gold); justify-content: center; }
-.contact-inner .display-title { color: var(--white); margin-bottom: 1.2rem; font-size: clamp(2.5rem, 5vw, 4.5rem); }
-.contact-inner p { color: rgba(255,255,255,0.45); line-height: 1.7; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 300; margin-bottom: 3rem; }
-.c-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
-.c-btn {
-  padding: 0.9rem 2.2rem; border-radius: 100px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em;
-  text-decoration: none; transition: all 0.25s;
-}
-.c-btn-gold { background: var(--gold); color: var(--white); }
-.c-btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
-.c-btn-out { border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.65); }
-.c-btn-out:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
-
-/* ── NAV bar (fixed top) ── */
-#topnav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 998;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.2rem 4rem;
-  background: rgba(9,25,41,0); backdrop-filter: blur(0px);
-  transition: background 0.4s, backdrop-filter 0.4s, padding 0.3s;
-}
-#topnav.lit {
-  background: rgba(245,240,232,0.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--white); transition: color 0.3s; }
-.nav-logo span { color: var(--gold); }
-#topnav.lit .nav-logo { color: var(--navy); }
-.nav-links { display: flex; gap: 2rem; }
-.nav-links a {
-  font-size: 0.72rem; font-weight: 500; text-decoration: none;
-  color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.25s;
-}
-#topnav.lit .nav-links a { color: var(--muted); }
-.nav-links a:hover { color: var(--gold) !important; }
-.nav-hire {
-  font-size: 0.72rem; font-weight: 600; padding: 0.5rem 1.2rem;
-  background: var(--gold); color: var(--white); border-radius: 100px;
-  text-decoration: none; transition: all 0.25s;
-}
-.nav-hire:hover { background: var(--gold2); transform: translateY(-1px); }
-
-/* ── Tall scenes: fixed 100vh, content scrolls inside ── */
-#scene-experience, #scene-projects, #scene-skills, #scene-certs {
-  height: 100vh;
-  overflow: hidden;
-  display: flex; align-items: flex-start; justify-content: center;
-}
-.exp-scene-inner, .proj-scene-inner, .skills-scene-inner, .certs-scene-inner {
-  overflow-y: auto;
-  max-height: 100vh;
-  width: 100%;
-  -webkit-overflow-scrolling: touch;
-}
-.exp-scene-inner::-webkit-scrollbar,
-.proj-scene-inner::-webkit-scrollbar,
-.skills-scene-inner::-webkit-scrollbar,
-.certs-scene-inner::-webkit-scrollbar { display: none; }
+/* ── CHART BOXES ── */
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+.chart-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
 
 @media (max-width: 900px) {
   #topnav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  .scene-inner, .stats-layout, .impact-scene-inner, .exp-scene-inner,
-  .proj-scene-inner, .charts-scene-inner, .skills-scene-inner, .certs-scene-inner {
-    padding: 0 1.5rem;
-  }
-  .stats-layout, .charts-row, .skills-row { grid-template-columns: 1fr; }
-  .impact-grid, .certs-grid { grid-template-columns: 1fr 1fr; }
-  .timeline-h { grid-template-columns: 1fr; }
-  .proj-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 560px) {
-  .impact-grid, .certs-grid { grid-template-columns: 1fr; }
-  .hero-name { font-size: 4.5rem; }
+  .scene-inner { padding: 0 1.5rem; }
+  .impact-grid, .timeline-h, .charts-row { grid-template-columns: 1fr; }
+  #progress-nav { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
 <nav id="topnav">
-  <div class="nav-logo">Saad <span>Naveed</span></div>
-  <div class="nav-links">
-    <a href="#" onclick="goTo(1)">About</a>
-    <a href="#" onclick="goTo(3)">Experience</a>
-    <a href="#" onclick="goTo(4)">Projects</a>
-    <a href="#" onclick="goTo(6)">Skills</a>
-    <a href="#" onclick="goTo(8)">Contact</a>
-  </div>
-  <a href="/cdn-cgi/l/email-protection#760517171258181700131312414f36111b171f1a5815191b" class="nav-hire">Hire Me</a>
+  <div class="nav-logo">Saad<span>Naveed</span></div>
+  <div style="font-family:'Fira Code'; font-size: 0.7rem; color: var(--accent-emerald)">> status: available_for_impact</div>
 </nav>
 
-<!-- PROGRESS DOTS -->
 <div id="progress-nav">
   <div class="pdot active" onclick="goTo(0)"></div>
   <div class="pdot" onclick="goTo(1)"></div>
   <div class="pdot" onclick="goTo(2)"></div>
   <div class="pdot" onclick="goTo(3)"></div>
   <div class="pdot" onclick="goTo(4)"></div>
-  <div class="pdot" onclick="goTo(5)"></div>
-  <div class="pdot" onclick="goTo(6)"></div>
-  <div class="pdot" onclick="goTo(7)"></div>
-  <div class="pdot" onclick="goTo(8)"></div>
 </div>
 
-<!-- SNAP CONTAINER -->
 <div id="snap-container">
 
-  <!-- SCENE 0: HERO -->
   <section class="scene" id="scene-hero" data-scene="0">
-    <div class="hero-bg-grid"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-scene-inner" id="heroInner">
-      <div class="hero-eyebrow">Senior Data Scientist · Riyadh, KSA</div>
-      <div class="hero-name">Saad<br/><strong>Naveed</strong></div>
-      <p class="hero-sub">9+ years converting financial complexity into decisions that move organisations forward. Finance analytics, ML modelling, and production forecasting.</p>
-      <div class="hero-pills">
-        <span class="pill">Finance Analytics</span>
-        <span class="pill">ML &amp; Forecasting</span>
-        <span class="pill">Credit Risk</span>
-        <span class="pill">Qlik · Power BI</span>
-        <span class="pill">Azure · Python</span>
-      </div>
-    </div>
-    <div class="scroll-cue">
-      <span>scroll</span>
-      <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
-        <path d="M8 1v14M2 10l6 7 6-7" stroke="rgba(196,154,80,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-  </section>
-
-  <!-- SCENE 1: STATS -->
-  <section class="scene" id="scene-stats" data-scene="1">
-    <div class="stats-layout">
-      <div class="stats-left scene-inner">
-        <div class="eyebrow" style="color:var(--gold)">At a Glance</div>
-        <h2 class="display-title" style="color:var(--navy)">Nine years of<br/><em style="font-style:italic;color:var(--gold)">measurable impact</em></h2>
-        <p class="body-text" style="color:var(--muted);margin-top:1rem;max-width:380px;">From fintech to enterprise telecoms — a track record built on models that survived production and numbers that moved the needle.</p>
-        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
-          <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" style="font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--gold);text-decoration:none;letter-spacing:0.06em;">LinkedIn →</a>
-          <a href="https://github.com/possiblecode" target="_blank" style="font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;">GitHub →</a>
-        </div>
-      </div>
-      <div class="stats-right scene-inner" style="transition-delay:0.15s">
-        <div class="stat-box"><div class="stat-n"><span data-count="9">0</span><sup>+</sup></div><div class="stat-l">Years Experience</div></div>
-        <div class="stat-box"><div class="stat-n"><span data-count="92">0</span><sup>%</sup></div><div class="stat-l">Loan Default Accuracy</div></div>
-        <div class="stat-box"><div class="stat-n"><span data-count="35">0</span><sup>%</sup></div><div class="stat-l">Churn Reduction</div></div>
-        <div class="stat-box" style="border-right:none"><div class="stat-n"><span data-count="65">0</span><sup>%</sup></div><div class="stat-l">Fraud Sales Reduced</div></div>
+    <div class="scene-inner">
+      <div class="cdmp-badge">🏅 CDMP CERTIFIED DATA PROFESSIONAL</div>
+      <h1 class="hero-name">Saad<br/><strong>Naveed</strong></h1>
+      <p style="margin-top: 2rem; font-size: 1.1rem; color: var(--text-dim); max-width: 600px; line-height: 1.7;">
+        Senior Data Scientist at <strong>STC Group</strong>. 9+ years engineering high-stakes financial ML models and production-grade analytics for the GCC’s largest enterprises.
+      </p>
+      <div style="margin-top: 2.5rem; display: flex; gap: 1rem;">
+        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Python / SQL</span>
+        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Azure MLOps</span>
+        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Finance Analytics</span>
       </div>
     </div>
   </section>
 
-  <!-- SCENE 2: IMPACT -->
-  <section class="scene" id="scene-impact" data-scene="2">
-    <div class="impact-scene-inner scene-inner">
-      <div class="eyebrow" style="color:var(--gold2)">Results</div>
-      <h2 class="display-title" style="color:var(--white)">Impact that moved<br/><em style="font-style:italic;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">the bottom line</em></h2>
+  <section class="scene" id="scene-impact" data-scene="1" style="background: #0B0E14;">
+    <div class="scene-inner">
+      <div class="eyebrow">// Strategic Value</div>
+      <h2 class="display-title">Quantifiable <span>Impact</span></h2>
       <div class="impact-grid">
-        <div class="impact-box ib-gold"><div class="impact-num">92<sup>%</sup></div><div class="impact-label">Loan default prediction accuracy — reduced financial losses for microfinance portfolio</div><div class="impact-co">Telenor · easypaisa</div></div>
-        <div class="impact-box ib-teal"><div class="impact-num teal">35<sup>%</sup></div><div class="impact-label">Reduction in app-based customer churn via targeted ML retention actions</div><div class="impact-co">Telenor · easypaisa</div></div>
-        <div class="impact-box ib-gold"><div class="impact-num">50<sup>%</sup></div><div class="impact-label">Increase in micro-loan portfolio — pilot to company-wide rollout</div><div class="impact-co">Lebara Mobile KSA</div></div>
-        <div class="impact-box ib-teal"><div class="impact-num teal">65<sup>%</sup></div><div class="impact-label">Reduction in wasted fraudulent sales via predictive behaviour modelling</div><div class="impact-co">Absoluit</div></div>
-        <div class="impact-box ib-gold"><div class="impact-num">20<sup>%</sup></div><div class="impact-label">Operational efficiency gain in loan disbursement through automation</div><div class="impact-co">Lebara Mobile KSA</div></div>
-        <div class="impact-box ib-teal"><div class="impact-num teal">30<sup>%</sup></div><div class="impact-label">Increase in sales from customer segmentation model deployment</div><div class="impact-co">Absoluit</div></div>
+        <div class="impact-box">
+          <div class="impact-num">92<span>%</span></div>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Loan default prediction accuracy — reduced risk for microfinance portfolios.</p>
+        </div>
+        <div class="impact-box">
+          <div class="impact-num">35<span>%</span></div>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Reduction in customer churn via targeted ML retention actions.</p>
+        </div>
+        <div class="impact-box">
+          <div class="impact-num">65<span>%</span></div>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Reduction in fraudulent sales via predictive behavior modeling.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- SCENE 3: EXPERIENCE -->
-  <section class="scene" id="scene-experience" data-scene="3">
-    <div class="exp-scene-inner">
-      <div class="eyebrow" style="color:var(--gold)">Career</div>
-      <h2 class="display-title" style="color:var(--navy);margin-bottom:2.5rem">Where I've built things</h2>
+  <section class="scene" id="scene-experience" data-scene="2">
+    <div class="scene-inner">
+      <div class="eyebrow">// Career Log</div>
+      <h2 class="display-title" style="margin-bottom: 2rem;">Production <span>History</span></h2>
       <div class="timeline-h">
-
         <div class="tl-card">
-          <div class="tl-period">Mar 2025 → Present</div>
-          <div class="tl-role">Senior Data Scientist — Finance Analytics</div>
-          <div class="tl-co">STC · via Upsource · Riyadh, KSA</div>
-          <div class="tl-tags"><span class="tl-tag g">Qlik</span><span class="tl-tag g">GL Forecasting</span><span class="tl-tag">Anomaly Detection</span><span class="tl-tag">Financial Ratios</span></div>
-          <ul class="tl-pts">
-            <li>Owned end-to-end <strong>finance analytics for senior leadership</strong> — forecasting, monitoring, risk identification.</li>
-            <li>Deployed <strong>Qlik financial ratio dashboards</strong> standardising profitability, efficiency, liquidity metrics.</li>
-            <li>Built production <strong>GL forecasting frameworks</strong> with leak-safe training and explainable outputs.</li>
-            <li>Led <strong>anomaly detection</strong> distinguishing structural shifts from noise.</li>
-          </ul>
-        </div>
-
-        <div class="tl-card">
-          <div class="tl-period">Oct 2022 → Feb 2025</div>
           <div class="tl-role">Senior Data Scientist</div>
-          <div class="tl-co">Lebara Mobile KSA · Riyadh, KSA</div>
-          <div class="tl-tags"><span class="tl-tag t">Credit Risk</span><span class="tl-tag t">LightFM</span><span class="tl-tag">Fraud Detection</span></div>
+          <div class="tl-co">STC · Riyadh, KSA (Current)</div>
           <ul class="tl-pts">
-            <li>Micro-loan ML programme — <strong>85% default accuracy</strong>, 10% fraud reduction, 50% portfolio growth.</li>
-            <li>Recommendation engine (LightFM) — <strong>+15% CTR, +10% engagement</strong>.</li>
-            <li>Customer segmentation powering <strong>targeted retention campaigns</strong> and CLV uplift.</li>
+            <li>End-to-end finance analytics for senior leadership.</li>
+            <li>Production GL forecasting with leak-safe pipelines.</li>
+            <li>Deployed Qlik financial ratio standardisation.</li>
           </ul>
         </div>
-
         <div class="tl-card">
-          <div class="tl-period">Sep 2021 → Sep 2022</div>
-          <div class="tl-role">Data Scientist / BI</div>
-          <div class="tl-co">Telenor Microfinance Bank (easypaisa) · PK</div>
-          <div class="tl-tags"><span class="tl-tag g">Digital Lending</span><span class="tl-tag">Credit Scoring</span><span class="tl-tag">Churn ML</span></div>
+          <div class="tl-role">Senior Data Scientist</div>
+          <div class="tl-co">Lebara Mobile · KSA</div>
           <ul class="tl-pts">
-            <li><strong>92% loan default accuracy</strong> — significantly reduced portfolio losses.</li>
-            <li>Reduced app churn by <strong>35%</strong> via ML-driven retention workflows.</li>
-            <li>Digital credit scoring pipelines; <strong>+10% revenue</strong> with marketing collaboration.</li>
+            <li>Micro-loan ML: 85% default accuracy.</li>
+            <li>Recommendation engine: +15% CTR uplift.</li>
+            <li>Customer segmentation for targeted retention.</li>
           </ul>
-        </div>
-
-        <div class="tl-card">
-          <div class="tl-period">Sep 2019 → Aug 2021</div>
-          <div class="tl-role">Data Scientist</div>
-          <div class="tl-co">Absoluit · Islamabad, PK</div>
-          <div class="tl-tags"><span class="tl-tag t">Route Optimisation</span><span class="tl-tag">Geo-Clustering</span><span class="tl-tag">Power BI</span></div>
-          <ul class="tl-pts">
-            <li>Fraud detection algorithm — <strong>65% reduction in wasted sales</strong>.</li>
-            <li>Customer segmentation deployment — <strong>+30% sales increase</strong>.</li>
-            <li>Route optimisation ML for ride-hailing service.</li>
-          </ul>
-        </div>
-
-        <div class="tl-card">
-          <div class="tl-period">Jan 2018 → Apr 2019</div>
-          <div class="tl-role">Data Analyst</div>
-          <div class="tl-co">Agilitron · Islamabad, PK</div>
-          <div class="tl-tags"><span class="tl-tag">Python</span><span class="tl-tag">ETL</span></div>
-          <ul class="tl-pts">
-            <li>Python ETL pipelines, timestamp data handling, data integrity for third-party clients.</li>
-          </ul>
-        </div>
-
-        <div class="tl-card">
-          <div class="tl-period">Apr 2016 → Dec 2017</div>
-          <div class="tl-role">Web Application Developer</div>
-          <div class="tl-co">Agilitron · Islamabad, PK</div>
-          <div class="tl-tags"><span class="tl-tag">Angular</span><span class="tl-tag">React JS</span><span class="tl-tag">Node.js</span></div>
-          <ul class="tl-pts">
-            <li>Full-stack with Angular, React, Bootstrap, Express, and MongoDB.</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SCENE 4: PROJECTS -->
-  <section class="scene" id="scene-projects" data-scene="4">
-    <div class="proj-scene-inner">
-      <div class="eyebrow" style="color:var(--gold)">Selected Work</div>
-      <h2 class="display-title" style="color:var(--navy)">Projects &amp; Deliverables</h2>
-      <div class="proj-grid">
-        <div class="proj-card">
-          <div class="proj-num">01</div>
-          <div class="proj-title">GL Forecasting Framework — STC</div>
-          <div class="proj-desc">Production-grade GL forecasting with leak-safe pipelines, horizon stability checks, and explainable outputs for executive planning.</div>
-          <div class="proj-result">→ Finance governance compliant · Qlik · Time Series</div>
-        </div>
-        <div class="proj-card">
-          <div class="proj-num">02</div>
-          <div class="proj-title">Recommendation Engine — Lebara Mobile</div>
-          <div class="proj-desc">LightFM + collaborative filtering for personalised recommendations. End-to-end pipeline from ingestion to live serving.</div>
-          <div class="proj-result">→ +15% CTR · +10% User Engagement</div>
-        </div>
-        <div class="proj-card">
-          <div class="proj-num">03</div>
-          <div class="proj-title">Loan Default Prediction — easypaisa</div>
-          <div class="proj-desc">End-to-end credit risk model for Telenor Microfinance Bank. Addressed model bias for fair lending outcomes.</div>
-          <div class="proj-result">→ 92% Accuracy · Reduced Financial Losses</div>
-        </div>
-        <div class="proj-card">
-          <div class="proj-num">04</div>
-          <div class="proj-title">Micro-Loan Credit Programme — Lebara</div>
-          <div class="proj-desc">ML credit scoring, compliance framework, automated disbursement and repayment, and company-wide rollout strategy.</div>
-          <div class="proj-result">→ +50% Portfolio Size · 20% Ops Efficiency</div>
-        </div>
-        <div class="proj-card">
-          <div class="proj-num">05</div>
-          <div class="proj-title">Fraudulent Behaviour Analysis — Absoluit</div>
-          <div class="proj-desc">Custom algorithm detecting fraudulent driver behaviour via acceleration, braking, and speed variance metrics.</div>
-          <div class="proj-result">→ 65% Reduction in Fraudulent Sales</div>
-        </div>
-        <div class="proj-card">
-          <div class="proj-num">06</div>
-          <div class="proj-title">Customer Segmentation Suite</div>
-          <div class="proj-desc">Unsupervised clustering across Lebara and Absoluit — demographic, behavioural, and purchase-history segmentation.</div>
-          <div class="proj-result">→ +30% Sales · Higher Retention Rates</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SCENE 5: CHARTS -->
-  <section class="scene" id="scene-charts" data-scene="5">
-    <div class="charts-scene-inner scene-inner">
-      <div class="eyebrow" style="color:var(--gold2)">Analytics</div>
-      <h2 class="display-title" style="color:var(--white)">Competency &amp; Impact<br/><em style="font-style:italic;color:var(--gold)">visualised</em></h2>
+  <section class="scene" id="scene-charts" data-scene="3" style="background: #0F1219;">
+    <div class="scene-inner">
+      <div class="eyebrow">// Competency Matrix</div>
+      <h2 class="display-title">Visualizing <span>Expertise</span></h2>
       <div class="charts-row">
         <div class="chart-box">
-          <div class="chart-label">// Domain Competency Radar</div>
           <canvas id="radarChart"></canvas>
         </div>
         <div class="chart-box">
-          <div class="chart-label">// Career Impact — Key Metrics</div>
           <canvas id="barChart"></canvas>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SCENE 6: SKILLS -->
-  <section class="scene" id="scene-skills" data-scene="6">
-    <div class="skills-scene-inner">
-      <div class="scene-inner" style="padding:0">
-        <div class="eyebrow" style="color:var(--gold)">Skills</div>
-        <h2 class="display-title" style="color:var(--navy)">Technical Arsenal</h2>
-      </div>
-      <div class="skills-row">
-        <div class="skill-block" id="skillBars">
-          <div class="sg-title">// Core Competencies</div>
-          <div class="s-row"><div class="s-head"><span class="s-name">Finance Analytics &amp; Forecasting</span><span class="s-pct">95%</span></div><div class="s-bar"><div class="s-fill" data-w="95"></div></div></div>
-          <div class="s-row"><div class="s-head"><span class="s-name">Credit Risk Modelling</span><span class="s-pct">92%</span></div><div class="s-bar"><div class="s-fill" data-w="92"></div></div></div>
-          <div class="s-row"><div class="s-head"><span class="s-name">Python &amp; SQL</span><span class="s-pct">93%</span></div><div class="s-bar"><div class="s-fill" data-w="93"></div></div></div>
-          <div class="s-row"><div class="s-head"><span class="s-name">Machine Learning</span><span class="s-pct">90%</span></div><div class="s-bar"><div class="s-fill" data-w="90"></div></div></div>
-          <div class="s-row"><div class="s-head"><span class="s-name">BI &amp; Data Visualisation</span><span class="s-pct">88%</span></div><div class="s-bar"><div class="s-fill" data-w="88"></div></div></div>
-          <div class="s-row"><div class="s-head"><span class="s-name">Cloud &amp; MLOps (Azure)</span><span class="s-pct">82%</span></div><div class="s-bar"><div class="s-fill" data-w="82"></div></div></div>
-          <div class="sg-title">// ML &amp; Data Libraries</div>
-          <div class="chip-row"><span class="chip">Scikit-Learn</span><span class="chip">XGBoost</span><span class="chip">LightGBM</span><span class="chip">TensorFlow</span><span class="chip">PyTorch</span><span class="chip">Keras</span><span class="chip">LightFM</span><span class="chip">Pandas</span><span class="chip">Spark</span></div>
-        </div>
-        <div>
-          <div class="sg-title" style="margin-top:0">// BI &amp; Visualisation</div>
-          <div class="chip-row" style="margin-bottom:2rem"><span class="chip">Qlik</span><span class="chip">Power BI</span><span class="chip">Tableau</span><span class="chip">Plotly</span></div>
-          <div class="sg-title">// Cloud &amp; Infrastructure</div>
-          <div class="chip-row" style="margin-bottom:2rem"><span class="chip">Azure</span><span class="chip">Azure DevOps</span><span class="chip">AWS</span><span class="chip">Cloudera</span><span class="chip">Hadoop</span><span class="chip">Kafka</span><span class="chip">Nifi</span></div>
-          <div style="background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:1.8rem;margin-top:1rem;">
-            <div style="font-family:'Fira Code',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.2rem;">// Skill Radar</div>
-            <canvas id="skillsRadar" height="260"></canvas>
-          </div>
-        </div>
+  <section class="scene" id="scene-contact" data-scene="4">
+    <div class="scene-inner" style="text-align: center;">
+      <h2 class="display-title">Ready for <span>Strategic Impact</span></h2>
+      <p style="color: var(--text-dim); margin: 2rem auto; max-width: 500px;">Currently based in Riyadh. Open to senior leadership and advanced engineering roles in Data Science.</p>
+      <div style="display: flex; justify-content: center; gap: 1.5rem;">
+        <a href="mailto:saad.naveed.ds@gmail.com" style="background: var(--accent-blue); color: white; padding: 1rem 2.5rem; border-radius: 8px; font-weight: 700; text-decoration: none;">Hire Saad</a>
+        <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" style="border: 1px solid var(--border); color: var(--text-main); padding: 1rem 2.5rem; border-radius: 8px; font-weight: 700; text-decoration: none;">LinkedIn</a>
       </div>
     </div>
   </section>
 
-  <!-- SCENE 7: CERTIFICATIONS -->
-  <section class="scene" id="scene-certs" data-scene="7">
-    <div class="certs-scene-inner">
-      <div class="scene-inner" style="padding:0">
-        <div class="eyebrow" style="color:var(--gold)">Credentials</div>
-        <h2 class="display-title" style="color:var(--navy)">Certifications &amp; Education</h2>
-        <p class="body-text" style="color:var(--muted);margin-top:0.6rem">Formally validated across data management, cloud, BI, and machine learning.</p>
-      </div>
-      <div class="certs-grid">
-        <div class="cert-card scene-inner" style="transition-delay:0s"><div class="cert-ico" style="background:rgba(196,154,80,0.1)">🏅</div><div><div class="cert-name">CDMP — Certified Data Management Professional</div><div class="cert-org">DAMA International · 2024</div></div></div>
-        <div class="cert-card scene-inner" style="transition-delay:0.1s"><div class="cert-ico" style="background:rgba(0,120,212,0.08)">🔷</div><div><div class="cert-name">Fabric Analytics Engineer Associate</div><div class="cert-org">Microsoft · 2024</div></div></div>
-        <div class="cert-card scene-inner" style="transition-delay:0.2s"><div class="cert-ico" style="background:rgba(0,120,212,0.08)">📊</div><div><div class="cert-name">Power BI Data Analyst Associate</div><div class="cert-org">Microsoft · 2024</div></div></div>
-        <div class="cert-card scene-inner" style="transition-delay:0.3s"><div class="cert-ico" style="background:rgba(0,120,212,0.08)">☁️</div><div><div class="cert-name">Azure Data Scientist Associate</div><div class="cert-org">Microsoft · 2023</div></div></div>
-        <div class="cert-card scene-inner" style="transition-delay:0.4s"><div class="cert-ico" style="background:rgba(15,98,254,0.08)">🎓</div><div><div class="cert-name">Data Science Professional Certificate</div><div class="cert-org">IBM — Coursera · 2019</div></div></div>
-        <div class="cert-card scene-inner" style="transition-delay:0.5s"><div class="cert-ico" style="background:rgba(14,107,112,0.08)">🏛</div><div><div class="cert-name">M.Sc. Computer Engineering</div><div class="cert-org">UET Taxila · 2015 · GPA 3.31</div></div></div>
-      </div>
-    </div>
-  </section>
+</div>
 
-  <!-- SCENE 8: CONTACT -->
-  <section class="scene" id="scene-contact" data-scene="8">
-    <div class="contact-inner">
-      <div class="eyebrow">Let's Connect</div>
-      <h2 class="display-title">Open to Senior<br/><em style="font-style:italic;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Analytics Roles</em></h2>
-      <p>Finance analytics, ML engineering, or data leadership — let's talk about what you're building.</p>
-      <div class="c-links">
-        <a href="/cdn-cgi/l/email-protection#2c5f4d4d4802424d5a4949481b156c4b414d4540024f4341" class="c-btn c-btn-gold"><span class="__cf_email__" data-cfemail="f380929297dd9d9285969697c4cab3949e929a9fdd909c9e">[email&#160;protected]</span></a>
-        <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" class="c-btn c-btn-out">LinkedIn →</a>
-        <a href="https://github.com/possiblecode" target="_blank" class="c-btn c-btn-out">GitHub →</a>
-      </div>
-      <p style="margin-top:3rem;font-family:'Fira Code',monospace;font-size:0.6rem;color:rgba(255,255,255,0.2);letter-spacing:0.06em;">+966 576 655 444</p>
-    </div>
-  </section>
-
-</div><!-- /snap-container -->
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ── Scene tracking ── */
+<script>
 const container = document.getElementById('snap-container');
 const scenes = document.querySelectorAll('.scene');
 const dots = document.querySelectorAll('.pdot');
-const topnav = document.getElementById('topnav');
 let currentScene = 0;
-let chartsBuilt = false;
-let skillsAnimated = false;
 
 function activateScene(idx) {
-  scenes.forEach((s, i) => {
-    s.classList.remove('active', 'exit-up');
-    if (i < idx) s.classList.add('exit-up');
-  });
-  scenes[idx].classList.add('active');
+  scenes.forEach(s => s.classList.remove('active'));
   dots.forEach(d => d.classList.remove('active'));
-  if (dots[idx]) dots[idx].classList.add('active');
-
-  // Nav theme
-  const darkScenes = [0, 2, 5, 8];
-  topnav.classList.toggle('lit', !darkScenes.includes(idx));
-
-  // Counters
-  if (idx === 1) animateCounters();
-  // Charts
-  if (idx === 5 && !chartsBuilt) { buildCharts(); chartsBuilt = true; }
-  // Skill bars
-  if (idx === 6 && !skillsAnimated) { animateSkillBars(); skillsAnimated = true; }
-  // Hero
-  if (idx === 0) document.getElementById('heroInner').classList.add('active');
-
+  scenes[idx].classList.add('active');
+  dots[idx].classList.add('active');
   currentScene = idx;
 }
 
-/* Initial activate */
-setTimeout(() => { activateScene(0); }, 100);
-
-/* ── Scroll observer (IntersectionObserver on each scene) ── */
-const snapObs = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-      const idx = parseInt(entry.target.dataset.scene);
-      if (idx !== currentScene) activateScene(idx);
+      activateScene(parseInt(entry.target.dataset.scene));
     }
   });
-}, { root: container, threshold: 0.5 });
+}, { threshold: 0.5 });
 
-scenes.forEach(s => snapObs.observe(s));
+scenes.forEach(s => observer.observe(s));
 
-/* ── Navigate by dot/link ── */
 function goTo(idx) {
   scenes[idx].scrollIntoView({ behavior: 'smooth' });
-  return false;
 }
 
+// ── CHART IMPLEMENTATION ──
+const blue = '#3B82F6', emerald = '#10B981';
 
-/* ── Animated counters ── */
-function animateCounters() {
-  document.querySelectorAll('[data-count]').forEach(el => {
-    const target = +el.dataset.count;
-    let n = 0; const step = target / 55;
-    const t = setInterval(() => {
-      n += step;
-      el.textContent = n >= target ? (clearInterval(t), target) : Math.floor(n);
-    }, 22);
-  });
-}
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['ML Engineering', 'Finance Analytics', 'Credit Risk', 'Data Governance', 'Python/SQL', 'MLOps'],
+    datasets: [{
+      label: 'Proficiency',
+      data: [90, 95, 92, 85, 95, 82],
+      backgroundColor: 'rgba(59, 130, 246, 0.2)',
+      borderColor: blue,
+      borderWidth: 2,
+      pointBackgroundColor: blue
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { r: { grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' }, ticks: { display: false }, pointLabels: { color: '#94A3B8', font: { size: 11 } } } }
+  }
+});
 
-/* ── Skill bars ── */
-function animateSkillBars() {
-  document.querySelectorAll('.s-fill').forEach((bar, i) => {
-    setTimeout(() => bar.style.width = bar.dataset.w + '%', i * 110);
-  });
-}
-
-/* ── Charts ── */
-function buildCharts() {
-  const goldA = 'rgba(196,154,80,', tealA = 'rgba(14,107,112,';
-
-  new Chart(document.getElementById('radarChart'), {
-    type: 'radar',
-    data: {
-      labels: ['Finance Analytics','Machine Learning','Credit Risk','BI & Reporting','Python / SQL','Cloud / MLOps','Stakeholder Comms','Data Governance'],
-      datasets: [{ data: [95,90,92,88,93,82,85,85],
-        backgroundColor: goldA+'0.12)', borderColor: goldA+'0.85)',
-        borderWidth: 2, pointBackgroundColor: '#C49A50', pointRadius: 4 }]
-    },
-    options: { responsive: true, animation: { duration: 1200 },
-      plugins: { legend: { display: false } },
-      scales: { r: { min: 60, max: 100, ticks: { display: false },
-        grid: { color: 'rgba(255,255,255,0.08)' }, angleLines: { color: 'rgba(255,255,255,0.07)' },
-        pointLabels: { color: 'rgba(255,255,255,0.45)', font: { family: "'Plus Jakarta Sans'", size: 10 } } } } }
-  });
-
-  new Chart(document.getElementById('barChart'), {
-    type: 'bar',
-    data: {
-      labels: ['Default\nAccuracy','Churn\nReduction','Portfolio\nGrowth','Fraud\nCut','Ops\nEfficiency','CTR\nLift'],
-      datasets: [{ data: [92,35,50,65,20,15],
-        backgroundColor: [goldA+'0.8)',tealA+'0.8)',goldA+'0.6)',tealA+'0.6)',goldA+'0.7)',tealA+'0.5)'],
-        borderColor: ['#C49A50','#0E6B70','#E0BA7A','#0E6B70','#E0BA7A','#0E6B70'],
-        borderWidth: 1.5, borderRadius: 6 }]
-    },
-    options: { responsive: true, animation: { duration: 1200 },
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw}%` } } },
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9.5 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)', callback: v => v+'%', font: { size: 9.5 } }, min: 0, max: 100 }
-      }
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Accuracy', 'Retention', 'Fraud Reduction', 'Ops Efficiency'],
+    datasets: [{
+      data: [92, 35, 65, 20],
+      backgroundColor: [blue, emerald, blue, emerald],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { 
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94A3B8' } },
+        x: { ticks: { color: '#94A3B8' } }
     }
-  });
+  }
+});
 
-  new Chart(document.getElementById('skillsRadar'), {
-    type: 'radar',
-    data: {
-      labels: ['Finance Analytics','ML / AI','Credit Risk','BI / Dashboards','Python & SQL','Cloud & MLOps','Stakeholder Mgmt','Data Governance'],
-      datasets: [{ data: [95,90,92,88,93,82,85,85],
-        backgroundColor: 'rgba(9,25,41,0.06)', borderColor: '#091929',
-        borderWidth: 2, pointBackgroundColor: '#C49A50', pointRadius: 4 }]
-    },
-    options: { responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { r: { min: 60, max: 100, ticks: { display: false },
-        grid: { color: 'rgba(9,25,41,0.1)' }, angleLines: { color: 'rgba(9,25,41,0.08)' },
-        pointLabels: { color: '#7A7065', font: { family: "'Plus Jakarta Sans'", size: 9.5 } }  } } }
-  });
-}
-
-/* ── Keyboard arrow navigation ── */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowDown' && currentScene < scenes.length - 1) goTo(currentScene + 1);
   if (e.key === 'ArrowUp' && currentScene > 0) goTo(currentScene - 1);
