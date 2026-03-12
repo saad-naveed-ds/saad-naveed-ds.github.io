@@ -6,248 +6,564 @@
 <title>Saad Naveed — Senior Data Scientist | STC Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 :root {
-  --bg-dark: #0B0E14;      /* Obsidian Base */
-  --bg-card: #151921;      /* Elevated Layer */
-  --accent-blue: #3B82F6;  /* Logic/Trust */
-  --accent-emerald: #10B981; /* Growth/Success */
-  --text-main: #F8FAFC;    /* High Contrast White */
-  --text-dim: #94A3B8;     /* Slate Grey */
-  --border: rgba(255, 255, 255, 0.08);
+  --bg:      #0B0E14;
+  --bg2:     #151921;
+  --bg3:     #1C2333;
+  --blue:    #3B82F6;
+  --blue2:   #60A5FA;
+  --em:      #10B981;
+  --em2:     #34D399;
+  --text:    #F8FAFC;
+  --dim:     #94A3B8;
+  --dim2:    #64748B;
+  --border:  rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.04);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden;}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* SNAP */
+#snap-container{width:100%;height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
+#snap-container::-webkit-scrollbar{width:3px;}
+#snap-container::-webkit-scrollbar-track{background:var(--bg);}
+#snap-container::-webkit-scrollbar-thumb{background:var(--blue);border-radius:10px;}
 
-html, body { 
-    width: 100%; height: 100%; 
-    background: var(--bg-dark); 
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    overflow: hidden; 
-}
+.scene{width:100%;height:100vh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
 
-/* ── SNAP CONTAINER ── */
-#snap-container {
-  width: 100%; height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+/* Tall scenes — 100vh, content scrolls inside */
+#scene-experience,#scene-projects,#scene-skills,#scene-certs{
+  height:100vh;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;
 }
-#snap-container::-webkit-scrollbar { width: 4px; }
-#snap-container::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 10px; }
+.exp-scene-inner,.proj-scene-inner,.skills-scene-inner,.certs-scene-inner{
+  overflow-y:auto;max-height:100vh;width:100%;-webkit-overflow-scrolling:touch;
+}
+.exp-scene-inner::-webkit-scrollbar,.proj-scene-inner::-webkit-scrollbar,
+.skills-scene-inner::-webkit-scrollbar,.certs-scene-inner::-webkit-scrollbar{display:none;}
 
-.scene {
-  width: 100%; height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  position: relative;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+/* NAV */
+#topnav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 4rem;
+  background:rgba(11,14,20,0.85);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:padding .3s;
 }
+#topnav.compact{padding:1rem 4rem;}
+.nav-logo{font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);}
+.nav-logo span{color:var(--blue);}
+.nav-links{display:flex;gap:2rem;}
+.nav-links a{font-family:'Fira Code',monospace;font-size:0.65rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:color .2s;}
+.nav-links a:hover{color:var(--blue);}
+.nav-status{font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--em);}
 
-/* ── NAVIGATION ── */
-#topnav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.5rem 4rem;
-  background: rgba(11, 14, 20, 0.8);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
-.nav-logo span { color: var(--accent-blue); }
+/* PROGRESS DOTS */
+#progress-nav{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:999;display:flex;flex-direction:column;gap:.7rem;}
+.pdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid var(--dim2);cursor:pointer;transition:.3s;}
+.pdot.active{background:var(--blue);border-color:var(--blue);transform:scale(1.5);}
 
-#progress-nav {
-  position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
-  z-index: 999; display: flex; flex-direction: column; gap: 0.8rem;
+/* SCENE ANIMATION */
+.scene-inner{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);
+  width:100%;max-width:1160px;padding:0 4rem;
 }
-.pdot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.1); border: 1px solid var(--text-dim);
-  cursor: pointer; transition: 0.3s;
-}
-.pdot.active { background: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.4); }
+.scene.active .scene-inner{opacity:1;transform:translateY(0);}
 
-/* ── CONTENT ANIMATIONS ── */
-.scene-inner {
-  opacity: 0; transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  width: 100%; max-width: 1160px; padding: 0 4rem;
-}
-.scene.active .scene-inner { opacity: 1; transform: translateY(0); }
+/* EYEBROW */
+.eyebrow{font-family:'Fira Code',monospace;font-size:.68rem;color:var(--blue);text-transform:uppercase;letter-spacing:.18em;margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;}
+.eyebrow::before{content:'//';opacity:.45;}
 
-/* ── TYPOGRAPHY ── */
-.eyebrow {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.7rem; color: var(--accent-blue);
-  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.2rem;
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.display-title {
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 800; line-height: 1.1; letter-spacing: -0.04em;
-}
-.display-title span { color: var(--accent-blue); }
+/* DISPLAY TITLE */
+.display-title{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;}
+.display-title span{color:var(--blue);}
+.display-title em{font-style:normal;background:linear-gradient(90deg,var(--blue),var(--em));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-/* ── HERO ── */
-#scene-hero { background: radial-gradient(circle at 50% 50%, #1a2333 0%, var(--bg-dark) 80%); }
-.hero-name { font-size: clamp(4rem, 11vw, 9rem); font-weight: 800; line-height: 0.9; }
-.hero-name strong { 
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.cdmp-badge {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1);
-    border: 1px solid var(--accent-blue); border-radius: 4px;
-    font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--accent-blue);
-    margin-bottom: 2rem;
-}
+/* ══════════════════════════
+   SCENE 0 — HERO
+══════════════════════════ */
+#scene-hero{background:radial-gradient(ellipse 80% 60% at 50% 40%,#1a2840 0%,var(--bg) 70%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);background-size:50px 50px;}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.07) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse 7s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.12);}}
+.hero-glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.05) 0%,transparent 65%);top:30%;left:70%;}
 
-/* ── IMPACT GRID ── */
-.impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 3rem; }
-.impact-box {
-  background: var(--bg-card); padding: 2rem; border-radius: 12px;
-  border: 1px solid var(--border); transition: 0.3s;
-}
-.impact-box:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
-.impact-num { font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
-.impact-num span { font-size: 1.5rem; color: var(--accent-emerald); }
+.hero-inner{position:relative;z-index:2;opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
+.hero-inner.active{opacity:1;transform:translateY(0);}
 
-/* ── EXPERIENCE CARDS ── */
-.timeline-h { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-.tl-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 1.8rem; position: relative;
-}
-.tl-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-blue);
-}
-.tl-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
-.tl-co { font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--accent-emerald); margin-bottom: 1rem; }
-.tl-pts { list-style: none; font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
-.tl-pts li::before { content: '→ '; color: var(--accent-blue); }
+.cdmp-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem 1.1rem;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.4);border-radius:6px;font-family:'Fira Code',monospace;font-size:.68rem;color:var(--blue);margin-bottom:2rem;letter-spacing:.06em;}
+.hero-eyebrow{font-family:'Fira Code',monospace;font-size:.68rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.2rem;}
+.hero-name{font-size:clamp(4.5rem,11vw,9rem);font-weight:800;line-height:.88;letter-spacing:-.04em;}
+.hero-name strong{display:block;background:linear-gradient(100deg,var(--blue),var(--em));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{margin-top:1.8rem;font-size:1rem;color:var(--dim);font-weight:300;max-width:560px;line-height:1.75;}
+.hero-sub strong{color:var(--text);font-weight:600;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.8rem;}
+.pill{font-family:'Fira Code',monospace;font-size:.63rem;padding:.32rem .85rem;border:1px solid var(--border);border-radius:4px;color:var(--dim);letter-spacing:.05em;transition:all .2s;}
+.pill:hover,.pill.hi{border-color:rgba(59,130,246,.5);color:var(--blue2);background:rgba(59,130,246,.07);}
+.pill.em{border-color:rgba(16,185,129,.4);color:var(--em2);background:rgba(16,185,129,.06);}
+.scroll-cue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--dim2);font-family:'Fira Code',monospace;font-size:.58rem;letter-spacing:.1em;animation:bob 2.5s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(7px);}}
 
-/* ── CHART BOXES ── */
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
-.chart-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+/* ══════════════════════════
+   SCENE 1 — STATS
+══════════════════════════ */
+#scene-stats{background:var(--bg);}
+.stats-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;width:100%;max-width:1160px;padding:0 4rem;}
+.stats-left .display-title{color:var(--text);}
+.stats-right{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.stat-box{background:var(--bg2);padding:2.2rem 1.8rem;display:flex;flex-direction:column;position:relative;transition:background .3s;}
+.stat-box:hover{background:var(--bg3);}
+.stat-box::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--em));opacity:0;transition:.3s;}
+.stat-box:hover::after{opacity:1;}
+.stat-n{font-size:3.2rem;font-weight:800;color:var(--text);line-height:1;}
+.stat-n sup{font-size:1.2rem;color:var(--blue);}
+.stat-l{font-family:'Fira Code',monospace;font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:.35rem;}
+.stats-links{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.8rem;}
+.stats-links a{font-family:'Fira Code',monospace;font-size:.65rem;color:var(--blue);text-decoration:none;letter-spacing:.06em;transition:color .2s;}
+.stats-links a:hover{color:var(--em);}
 
-@media (max-width: 900px) {
-  #topnav { padding: 1rem 1.5rem; }
-  .scene-inner { padding: 0 1.5rem; }
-  .impact-grid, .timeline-h, .charts-row { grid-template-columns: 1fr; }
-  #progress-nav { display: none; }
+/* ══════════════════════════
+   SCENE 2 — IMPACT
+══════════════════════════ */
+#scene-impact{background:var(--bg);}
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:2.5rem;}
+.impact-box{background:var(--bg2);padding:2.2rem 2rem;position:relative;overflow:hidden;transition:background .3s;}
+.impact-box:hover{background:var(--bg3);}
+.impact-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.ib-b::before{background:linear-gradient(90deg,var(--blue),var(--blue2));}
+.ib-e::before{background:linear-gradient(90deg,var(--em),var(--em2));}
+.impact-num{font-size:3.5rem;font-weight:800;line-height:1;margin-bottom:.4rem;}
+.impact-num.b{background:linear-gradient(135deg,var(--blue2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.impact-num.e{background:linear-gradient(135deg,var(--em2),var(--em));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.impact-num sup{font-size:1.4rem;}
+.impact-label{font-size:.82rem;color:var(--dim);line-height:1.55;margin-top:.3rem;}
+.impact-co{font-family:'Fira Code',monospace;font-size:.58rem;color:var(--dim2);text-transform:uppercase;letter-spacing:.06em;margin-top:.7rem;}
+
+/* ══════════════════════════
+   SCENE 3 — EXPERIENCE
+══════════════════════════ */
+#scene-experience{background:var(--bg);}
+.exp-scene-inner{max-width:1160px;padding:5.5rem 4rem 3rem;}
+.timeline-h{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2rem;}
+.tl-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.8rem;position:relative;transition:transform .3s,box-shadow .3s,border-color .3s;}
+.tl-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.tl-card.bc::before{background:var(--blue);}
+.tl-card.ec::before{background:var(--em);}
+.tl-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.35);border-color:rgba(59,130,246,.25);}
+.tl-period{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.08em;margin-bottom:.25rem;}
+.tl-card.ec .tl-period{color:var(--em);}
+.tl-role{font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:.12rem;}
+.tl-co{font-family:'Fira Code',monospace;font-size:.7rem;color:var(--em);margin-bottom:.8rem;}
+.tl-card.bc .tl-co{color:var(--blue2);}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.8rem;}
+.tl-tag{font-size:.58rem;font-weight:500;padding:.18rem .55rem;border-radius:4px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);}
+.tl-tag.e{background:rgba(16,185,129,.1);color:var(--em2);border-color:rgba(16,185,129,.2);}
+.tl-pts{list-style:none;}
+.tl-pts li{font-size:.79rem;color:var(--dim);padding-left:1.1rem;position:relative;line-height:1.6;margin-bottom:.28rem;}
+.tl-pts li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:.7rem;}
+.tl-card.ec .tl-pts li::before{color:var(--em);}
+.tl-pts strong{color:var(--text);font-weight:600;}
+
+/* ══════════════════════════
+   SCENE 4 — PROJECTS
+══════════════════════════ */
+#scene-projects{background:var(--bg2);}
+.proj-scene-inner{max-width:1160px;padding:5rem 4rem 3rem;}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;}
+.proj-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s,border-color .3s;}
+.proj-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:rgba(59,130,246,.3);}
+.proj-num{font-family:'Fira Code',monospace;font-size:2rem;font-weight:500;color:rgba(59,130,246,.2);line-height:1;margin-bottom:.5rem;}
+.proj-title{font-size:.95rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:.5rem;}
+.proj-desc{font-size:.75rem;color:var(--dim);line-height:1.65;flex:1;margin-bottom:.9rem;}
+.proj-result{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--em);border-top:1px solid var(--border);padding-top:.75rem;letter-spacing:.04em;}
+
+/* ══════════════════════════
+   SCENE 5 — CHARTS
+══════════════════════════ */
+#scene-charts{background:var(--bg);}
+.charts-scene-inner{width:100%;max-width:1160px;padding:0 4rem;}
+.charts-row{display:grid;grid-template-columns:1.1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.8rem;}
+.chart-label{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--dim2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.4rem;}
+.chart-box canvas{max-height:260px;}
+
+/* ══════════════════════════
+   SCENE 6 — SKILLS
+══════════════════════════ */
+#scene-skills{background:var(--bg2);}
+.skills-scene-inner{max-width:1160px;padding:5rem 4rem 3rem;}
+.skills-row{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;margin-top:2rem;align-items:start;}
+.sg-title{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--dim2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;margin-top:1.6rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.sg-title:first-child{margin-top:0;}
+.s-row{margin-bottom:1.3rem;}
+.s-head{display:flex;justify-content:space-between;margin-bottom:.4rem;}
+.s-name{font-size:.78rem;font-weight:500;color:var(--text);}
+.s-pct{font-family:'Fira Code',monospace;font-size:.62rem;color:var(--blue);}
+.s-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.s-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--em));width:0;border-radius:2px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+.chip-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem;}
+.chip{font-family:'Fira Code',monospace;font-size:.62rem;padding:.25rem .65rem;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);border-radius:4px;color:var(--blue2);transition:all .2s;}
+.chip:hover{background:rgba(59,130,246,.15);border-color:var(--blue);}
+.chip.e{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.2);color:var(--em2);}
+.skills-right-panel{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:1.6rem;margin-top:0;}
+
+/* ══════════════════════════
+   SCENE 7 — CERTIFICATIONS
+══════════════════════════ */
+#scene-certs{background:var(--bg);}
+.certs-scene-inner{max-width:1160px;padding:5rem 4rem 3rem;}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;}
+.cert-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.6rem;display:flex;align-items:flex-start;gap:.9rem;transition:transform .3s,border-color .3s;}
+.cert-card:hover{transform:translateY(-3px);border-color:rgba(59,130,246,.35);}
+.cert-card.feat{border-color:rgba(59,130,246,.3);background:linear-gradient(135deg,rgba(59,130,246,.08),var(--bg2));}
+.cert-ico{width:36px;min-width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;background:rgba(59,130,246,.12);}
+.cert-name{font-size:.8rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:.25rem;}
+.cert-org{font-family:'Fira Code',monospace;font-size:.56rem;color:var(--dim2);letter-spacing:.04em;}
+.cert-org.b{color:var(--blue);}
+
+/* ══════════════════════════
+   SCENE 8 — CONTACT
+══════════════════════════ */
+#scene-contact{background:radial-gradient(ellipse 70% 60% at 50% 50%,#141f33 0%,var(--bg) 75%);}
+.contact-inner{text-align:center;max-width:640px;padding:0 2rem;}
+.contact-inner .display-title{font-size:clamp(2.2rem,5vw,3.8rem);}
+.contact-inner p{color:var(--dim);font-size:.92rem;line-height:1.8;font-weight:300;margin:1.5rem auto 2.8rem;max-width:480px;}
+.c-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.c-btn{padding:.9rem 2.2rem;border-radius:8px;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .25s;}
+.c-btn-blue{background:var(--blue);color:#fff;}
+.c-btn-blue:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.35);}
+.c-btn-out{border:1px solid var(--border);color:var(--text);}
+.c-btn-out:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px);}
+.contact-meta{margin-top:2.5rem;font-family:'Fira Code',monospace;font-size:.6rem;color:var(--dim2);letter-spacing:.08em;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  #topnav,#topnav.compact{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  .scene-inner,.stats-layout,.charts-scene-inner,.exp-scene-inner,.proj-scene-inner,.skills-scene-inner,.certs-scene-inner{padding:0 1.5rem;}
+  .exp-scene-inner,.proj-scene-inner,.skills-scene-inner,.certs-scene-inner{padding:4.5rem 1.5rem 2rem;}
+  .stats-layout,.charts-row,.skills-row{grid-template-columns:1fr;}
+  .timeline-h,.impact-grid,.certs-grid,.proj-grid{grid-template-columns:1fr 1fr;}
+  #progress-nav{display:none;}
+}
+@media(max-width:560px){
+  .timeline-h,.impact-grid,.certs-grid,.proj-grid{grid-template-columns:1fr;}
+  .hero-name{font-size:4.5rem;}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav id="topnav">
   <div class="nav-logo">Saad<span>Naveed</span></div>
-  <div style="font-family:'Fira Code'; font-size: 0.7rem; color: var(--accent-emerald)">> status: available_for_impact</div>
+  <div class="nav-links">
+    <a href="#" onclick="goTo(1);return false">About</a>
+    <a href="#" onclick="goTo(3);return false">Experience</a>
+    <a href="#" onclick="goTo(4);return false">Projects</a>
+    <a href="#" onclick="goTo(6);return false">Skills</a>
+    <a href="#" onclick="goTo(8);return false">Contact</a>
+  </div>
+  <div class="nav-status">> status: available_for_impact</div>
 </nav>
 
+<!-- PROGRESS DOTS -->
 <div id="progress-nav">
   <div class="pdot active" onclick="goTo(0)"></div>
   <div class="pdot" onclick="goTo(1)"></div>
   <div class="pdot" onclick="goTo(2)"></div>
   <div class="pdot" onclick="goTo(3)"></div>
   <div class="pdot" onclick="goTo(4)"></div>
+  <div class="pdot" onclick="goTo(5)"></div>
+  <div class="pdot" onclick="goTo(6)"></div>
+  <div class="pdot" onclick="goTo(7)"></div>
+  <div class="pdot" onclick="goTo(8)"></div>
 </div>
 
 <div id="snap-container">
 
+  <!-- SCENE 0: HERO -->
   <section class="scene" id="scene-hero" data-scene="0">
-    <div class="scene-inner">
-      <div class="cdmp-badge">🏅 CDMP CERTIFIED DATA PROFESSIONAL</div>
-      <h1 class="hero-name">Saad<br/><strong>Naveed</strong></h1>
-      <p style="margin-top: 2rem; font-size: 1.1rem; color: var(--text-dim); max-width: 600px; line-height: 1.7;">
-        Senior Data Scientist at <strong>STC Group</strong>. 9+ years engineering high-stakes financial ML models and production-grade analytics for the GCC’s largest enterprises.
-      </p>
-      <div style="margin-top: 2.5rem; display: flex; gap: 1rem;">
-        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Python / SQL</span>
-        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Azure MLOps</span>
-        <span style="font-family:'Fira Code'; font-size:0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 4px;">Finance Analytics</span>
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-inner scene-inner" id="heroInner">
+      <div class="cdmp-badge">🏅 CDMP · CERTIFIED DATA MANAGEMENT PROFESSIONAL</div>
+      <div class="hero-eyebrow">Senior Data Scientist · Riyadh, KSA · STC Group</div>
+      <div class="hero-name">Saad<br/><strong>Naveed</strong></div>
+      <p class="hero-sub">9+ years engineering high-stakes financial ML models and production-grade analytics for the <strong>GCC's largest enterprises</strong>. Finance forecasting, credit risk, and AI-driven decision systems at scale.</p>
+      <div class="hero-pills">
+        <span class="pill hi">Finance Analytics</span>
+        <span class="pill hi">ML Engineering</span>
+        <span class="pill hi">Credit Risk</span>
+        <span class="pill hi">AI / Deep Learning</span>
+        <span class="pill hi">Data Science</span>
+        <span class="pill">Qlik · Power BI</span>
+        <span class="pill">Azure MLOps</span>
+        <span class="pill">Python · SQL</span>
+        <span class="pill em">XGBoost · LightGBM</span>
+        <span class="pill em">TensorFlow · PyTorch</span>
+        <span class="pill">Anomaly Detection</span>
+        <span class="pill">Time Series Forecasting</span>
+        <span class="pill">NLP &amp; Transformers</span>
+        <span class="pill em">Spark · Kafka</span>
+      </div>
+    </div>
+    <div class="scroll-cue">
+      <span>scroll</span>
+      <svg width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M7 1v12M2 9l5 6 5-6" stroke="rgba(59,130,246,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- SCENE 1: STATS -->
+  <section class="scene" id="scene-stats" data-scene="1">
+    <div class="stats-layout">
+      <div class="stats-left scene-inner">
+        <div class="eyebrow">At a Glance</div>
+        <h2 class="display-title">Nine years of<br/><em>measurable impact</em></h2>
+        <p style="color:var(--dim);font-size:.9rem;line-height:1.75;font-weight:300;margin-top:1rem;max-width:380px;">From fintech to enterprise telecoms — a track record built on models that survived production and numbers that moved the needle.</p>
+        <div class="stats-links">
+          <a href="https://linkedin.com/in/m-saad-naveed" target="_blank">LinkedIn →</a>
+          <a href="https://github.com/possiblecode" target="_blank" style="color:var(--dim);">GitHub →</a>
+        </div>
+      </div>
+      <div class="stats-right scene-inner" style="transition-delay:.15s">
+        <div class="stat-box"><div class="stat-n"><span data-count="9">0</span><sup>+</sup></div><div class="stat-l">Years Experience</div></div>
+        <div class="stat-box"><div class="stat-n"><span data-count="92">0</span><sup>%</sup></div><div class="stat-l">Loan Default Accuracy</div></div>
+        <div class="stat-box"><div class="stat-n"><span data-count="35">0</span><sup>%</sup></div><div class="stat-l">Churn Reduction</div></div>
+        <div class="stat-box"><div class="stat-n"><span data-count="65">0</span><sup>%</sup></div><div class="stat-l">Fraud Sales Reduced</div></div>
       </div>
     </div>
   </section>
 
-  <section class="scene" id="scene-impact" data-scene="1" style="background: #0B0E14;">
+  <!-- SCENE 2: IMPACT -->
+  <section class="scene" id="scene-impact" data-scene="2">
     <div class="scene-inner">
-      <div class="eyebrow">// Strategic Value</div>
-      <h2 class="display-title">Quantifiable <span>Impact</span></h2>
+      <div class="eyebrow" style="color:var(--em)">Results</div>
+      <h2 class="display-title">Impact that moved<br/><em>the bottom line</em></h2>
       <div class="impact-grid">
-        <div class="impact-box">
-          <div class="impact-num">92<span>%</span></div>
-          <p style="color: var(--text-dim); font-size: 0.9rem;">Loan default prediction accuracy — reduced risk for microfinance portfolios.</p>
-        </div>
-        <div class="impact-box">
-          <div class="impact-num">35<span>%</span></div>
-          <p style="color: var(--text-dim); font-size: 0.9rem;">Reduction in customer churn via targeted ML retention actions.</p>
-        </div>
-        <div class="impact-box">
-          <div class="impact-num">65<span>%</span></div>
-          <p style="color: var(--text-dim); font-size: 0.9rem;">Reduction in fraudulent sales via predictive behavior modeling.</p>
-        </div>
+        <div class="impact-box ib-b"><div class="impact-num b">92<sup>%</sup></div><div class="impact-label">Loan default prediction accuracy — reduced financial losses for microfinance portfolio</div><div class="impact-co">Telenor · easypaisa</div></div>
+        <div class="impact-box ib-e"><div class="impact-num e">35<sup>%</sup></div><div class="impact-label">Reduction in app-based customer churn via targeted ML retention actions</div><div class="impact-co">Telenor · easypaisa</div></div>
+        <div class="impact-box ib-b"><div class="impact-num b">50<sup>%</sup></div><div class="impact-label">Increase in micro-loan portfolio — pilot to company-wide rollout at scale</div><div class="impact-co">Lebara Mobile KSA</div></div>
+        <div class="impact-box ib-e"><div class="impact-num e">65<sup>%</sup></div><div class="impact-label">Reduction in wasted fraudulent sales via predictive behaviour modelling</div><div class="impact-co">Absoluit</div></div>
+        <div class="impact-box ib-b"><div class="impact-num b">20<sup>%</sup></div><div class="impact-label">Operational efficiency gain in loan disbursement through process automation</div><div class="impact-co">Lebara Mobile KSA</div></div>
+        <div class="impact-box ib-e"><div class="impact-num e">30<sup>%</sup></div><div class="impact-label">Sales increase from customer segmentation model deployment</div><div class="impact-co">Absoluit</div></div>
       </div>
     </div>
   </section>
 
-  <section class="scene" id="scene-experience" data-scene="2">
-    <div class="scene-inner">
-      <div class="eyebrow">// Career Log</div>
-      <h2 class="display-title" style="margin-bottom: 2rem;">Production <span>History</span></h2>
+  <!-- SCENE 3: EXPERIENCE -->
+  <section class="scene" id="scene-experience" data-scene="3">
+    <div class="exp-scene-inner">
+      <div class="eyebrow">Career Log</div>
+      <h2 class="display-title">Production <span>History</span></h2>
       <div class="timeline-h">
-        <div class="tl-card">
-          <div class="tl-role">Senior Data Scientist</div>
-          <div class="tl-co">STC · Riyadh, KSA (Current)</div>
+
+        <div class="tl-card bc">
+          <div class="tl-period">Mar 2025 → Present</div>
+          <div class="tl-role">Senior Data Scientist — Finance Analytics</div>
+          <div class="tl-co">STC · via Upsource · Riyadh, KSA</div>
+          <div class="tl-tags"><span class="tl-tag">Qlik</span><span class="tl-tag">GL Forecasting</span><span class="tl-tag">Anomaly Detection</span><span class="tl-tag">Financial Ratios</span></div>
           <ul class="tl-pts">
-            <li>End-to-end finance analytics for senior leadership.</li>
-            <li>Production GL forecasting with leak-safe pipelines.</li>
-            <li>Deployed Qlik financial ratio standardisation.</li>
+            <li>Owned end-to-end <strong>finance analytics for senior leadership</strong> — forecasting, monitoring, risk identification.</li>
+            <li>Deployed <strong>Qlik financial ratio dashboards</strong> standardising profitability, efficiency, and liquidity metrics.</li>
+            <li>Built production <strong>GL forecasting frameworks</strong> with leak-safe training and explainable outputs.</li>
+            <li>Led <strong>anomaly detection &amp; trend diagnostics</strong> distinguishing structural shifts from noise.</li>
           </ul>
         </div>
-        <div class="tl-card">
+
+        <div class="tl-card ec">
+          <div class="tl-period">Oct 2022 → Feb 2025</div>
           <div class="tl-role">Senior Data Scientist</div>
-          <div class="tl-co">Lebara Mobile · KSA</div>
+          <div class="tl-co">Lebara Mobile KSA · Riyadh, KSA</div>
+          <div class="tl-tags"><span class="tl-tag e">Credit Risk</span><span class="tl-tag e">LightFM</span><span class="tl-tag e">Fraud Detection</span></div>
           <ul class="tl-pts">
-            <li>Micro-loan ML: 85% default accuracy.</li>
-            <li>Recommendation engine: +15% CTR uplift.</li>
-            <li>Customer segmentation for targeted retention.</li>
+            <li>Micro-loan ML programme — <strong>85% default accuracy</strong>, 10% fraud reduction, 50% portfolio growth.</li>
+            <li>Recommendation engine (LightFM + collaborative filtering) — <strong>+15% CTR, +10% engagement</strong>.</li>
+            <li>Customer segmentation powering <strong>targeted retention campaigns</strong> and CLV uplift.</li>
+            <li>Scaled micro-loan from pilot to company-wide — <strong>+20% ops efficiency</strong>.</li>
           </ul>
+        </div>
+
+        <div class="tl-card bc">
+          <div class="tl-period">Sep 2021 → Sep 2022</div>
+          <div class="tl-role">Data Scientist / BI</div>
+          <div class="tl-co">Telenor Microfinance Bank (easypaisa) · PK</div>
+          <div class="tl-tags"><span class="tl-tag">Digital Lending</span><span class="tl-tag">Credit Scoring</span><span class="tl-tag">Churn ML</span></div>
+          <ul class="tl-pts">
+            <li><strong>92% loan default accuracy</strong> — significantly reduced portfolio losses.</li>
+            <li>Reduced app churn by <strong>35%</strong> via ML-driven retention workflows.</li>
+            <li>Digital credit scoring pipelines; collaborated with marketing for <strong>+10% revenue uplift</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="tl-card ec">
+          <div class="tl-period">Sep 2019 → Aug 2021</div>
+          <div class="tl-role">Data Scientist</div>
+          <div class="tl-co">Absoluit · Islamabad, PK</div>
+          <div class="tl-tags"><span class="tl-tag e">Route Optimisation</span><span class="tl-tag e">Geo-Clustering</span><span class="tl-tag e">Power BI</span></div>
+          <ul class="tl-pts">
+            <li>Fraud detection algorithm — <strong>65% reduction in wasted sales</strong>.</li>
+            <li>Customer segmentation deployment — <strong>+30% sales increase</strong>.</li>
+            <li>Route optimisation ML for ride-hailing; tap-stream user behaviour analytics.</li>
+          </ul>
+        </div>
+
+        <div class="tl-card bc">
+          <div class="tl-period">Jan 2018 → Apr 2019</div>
+          <div class="tl-role">Data Analyst</div>
+          <div class="tl-co">Agilitron · Islamabad, PK</div>
+          <div class="tl-tags"><span class="tl-tag">Python</span><span class="tl-tag">ETL</span></div>
+          <ul class="tl-pts">
+            <li>Python ETL pipelines, timestamp data handling, and data integrity for third-party clients.</li>
+          </ul>
+        </div>
+
+        <div class="tl-card ec">
+          <div class="tl-period">Apr 2016 → Dec 2017</div>
+          <div class="tl-role">Web Application Developer</div>
+          <div class="tl-co">Agilitron · Islamabad, PK</div>
+          <div class="tl-tags"><span class="tl-tag e">Angular</span><span class="tl-tag e">React JS</span><span class="tl-tag e">Node.js</span></div>
+          <ul class="tl-pts">
+            <li>Full-stack with Angular, React, Bootstrap, Express, and MongoDB.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4: PROJECTS -->
+  <section class="scene" id="scene-projects" data-scene="4">
+    <div class="proj-scene-inner">
+      <div class="eyebrow" style="color:var(--em)">Selected Work</div>
+      <h2 class="display-title">Projects &amp; <span>Deliverables</span></h2>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <div class="proj-num">01</div>
+          <div class="proj-title">GL Forecasting Framework — STC</div>
+          <div class="proj-desc">Production-grade general ledger forecasting with leak-safe training pipelines, horizon stability checks, and explainable outputs for executive planning cycles.</div>
+          <div class="proj-result">→ Finance governance compliant · Qlik · Time Series</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">02</div>
+          <div class="proj-title">Recommendation Engine — Lebara Mobile</div>
+          <div class="proj-desc">LightFM + collaborative filtering for personalised product recommendations. End-to-end pipeline from ingestion through feature engineering to live serving.</div>
+          <div class="proj-result">→ +15% CTR · +10% User Engagement</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">03</div>
+          <div class="proj-title">Loan Default Prediction — easypaisa</div>
+          <div class="proj-desc">End-to-end credit risk model for Telenor Microfinance Bank. Addressed model bias for fair lending. Integrated with multidisciplinary risk and analytics teams.</div>
+          <div class="proj-result">→ 92% Accuracy · Reduced Financial Losses</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">04</div>
+          <div class="proj-title">Micro-Loan Credit Programme — Lebara</div>
+          <div class="proj-desc">ML credit scoring, regulatory compliance framework, automated disbursement and repayment, and company-wide rollout strategy.</div>
+          <div class="proj-result">→ +50% Portfolio Size · 20% Ops Efficiency</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">05</div>
+          <div class="proj-title">Fraudulent Behaviour Analysis — Absoluit</div>
+          <div class="proj-desc">Custom algorithm detecting fraudulent driver behaviour via acceleration, braking, and speed variance metrics. Real-time predictive flagging model.</div>
+          <div class="proj-result">→ 65% Reduction in Fraudulent Sales</div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-num">06</div>
+          <div class="proj-title">Customer Segmentation Suite</div>
+          <div class="proj-desc">Unsupervised clustering across Lebara and Absoluit — demographic, behavioural, and purchase-history segmentation for targeted marketing campaigns.</div>
+          <div class="proj-result">→ +30% Sales · Higher Retention Rates</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="scene" id="scene-charts" data-scene="3" style="background: #0F1219;">
-    <div class="scene-inner">
-      <div class="eyebrow">// Competency Matrix</div>
-      <h2 class="display-title">Visualizing <span>Expertise</span></h2>
+  <!-- SCENE 5: CHARTS -->
+  <section class="scene" id="scene-charts" data-scene="5">
+    <div class="charts-scene-inner scene-inner">
+      <div class="eyebrow" style="color:var(--em)">Analytics</div>
+      <h2 class="display-title">Competency &amp; <span>Impact</span> Visualised</h2>
       <div class="charts-row">
         <div class="chart-box">
+          <div class="chart-label">// Domain Competency Radar</div>
           <canvas id="radarChart"></canvas>
         </div>
         <div class="chart-box">
+          <div class="chart-label">// Career Impact — Key Metrics</div>
           <canvas id="barChart"></canvas>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="scene" id="scene-contact" data-scene="4">
-    <div class="scene-inner" style="text-align: center;">
-      <h2 class="display-title">Ready for <span>Strategic Impact</span></h2>
-      <p style="color: var(--text-dim); margin: 2rem auto; max-width: 500px;">Currently based in Riyadh. Open to senior leadership and advanced engineering roles in Data Science.</p>
-      <div style="display: flex; justify-content: center; gap: 1.5rem;">
-        <a href="mailto:saad.naveed.ds@gmail.com" style="background: var(--accent-blue); color: white; padding: 1rem 2.5rem; border-radius: 8px; font-weight: 700; text-decoration: none;">Hire Saad</a>
-        <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" style="border: 1px solid var(--border); color: var(--text-main); padding: 1rem 2.5rem; border-radius: 8px; font-weight: 700; text-decoration: none;">LinkedIn</a>
+  <!-- SCENE 6: SKILLS -->
+  <section class="scene" id="scene-skills" data-scene="6">
+    <div class="skills-scene-inner">
+      <div class="eyebrow">Technical Arsenal</div>
+      <h2 class="display-title"><span>Skills</span> &amp; Expertise</h2>
+      <div class="skills-row">
+        <div id="skillBars">
+          <div class="sg-title">// Core Competencies</div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Finance Analytics &amp; Forecasting</span><span class="s-pct">95%</span></div><div class="s-bar"><div class="s-fill" data-w="95"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Credit Risk Modelling</span><span class="s-pct">92%</span></div><div class="s-bar"><div class="s-fill" data-w="92"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Python &amp; SQL</span><span class="s-pct">93%</span></div><div class="s-bar"><div class="s-fill" data-w="93"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Machine Learning / AI</span><span class="s-pct">90%</span></div><div class="s-bar"><div class="s-fill" data-w="90"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">BI &amp; Data Visualisation</span><span class="s-pct">88%</span></div><div class="s-bar"><div class="s-fill" data-w="88"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Deep Learning (TF / PyTorch)</span><span class="s-pct">85%</span></div><div class="s-bar"><div class="s-fill" data-w="85"></div></div></div>
+          <div class="s-row"><div class="s-head"><span class="s-name">Cloud &amp; MLOps (Azure)</span><span class="s-pct">82%</span></div><div class="s-bar"><div class="s-fill" data-w="82"></div></div></div>
+          <div class="sg-title">// ML &amp; AI Libraries</div>
+          <div class="chip-row"><span class="chip">Scikit-Learn</span><span class="chip">XGBoost</span><span class="chip">LightGBM</span><span class="chip">TensorFlow</span><span class="chip">PyTorch</span><span class="chip">Keras</span><span class="chip">LightFM</span><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Spark</span></div>
+        </div>
+        <div>
+          <div class="sg-title" style="margin-top:0">// BI &amp; Visualisation</div>
+          <div class="chip-row" style="margin-bottom:1.2rem"><span class="chip e">Qlik</span><span class="chip e">Power BI</span><span class="chip e">Tableau</span><span class="chip e">Plotly</span></div>
+          <div class="sg-title">// Cloud &amp; Big Data</div>
+          <div class="chip-row" style="margin-bottom:1.2rem"><span class="chip">Azure</span><span class="chip">Azure DevOps</span><span class="chip">AWS</span><span class="chip">Cloudera</span><span class="chip">Hadoop</span><span class="chip">Kafka</span><span class="chip">Nifi</span><span class="chip">Spark</span></div>
+          <div class="sg-title">// Data Science Domains</div>
+          <div class="chip-row" style="margin-bottom:1.2rem"><span class="chip e">NLP</span><span class="chip e">Time Series</span><span class="chip e">Anomaly Detection</span><span class="chip e">Rec. Systems</span><span class="chip e">Clustering</span></div>
+          <div class="skills-right-panel">
+            <div class="chart-label">// Skill Radar</div>
+            <canvas id="skillsRadar" height="240"></canvas>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SCENE 7: CERTIFICATIONS -->
+  <section class="scene" id="scene-certs" data-scene="7">
+    <div class="certs-scene-inner">
+      <div class="eyebrow">Credentials</div>
+      <h2 class="display-title">Certifications &amp; <span>Education</span></h2>
+      <p style="color:var(--dim);font-size:.88rem;margin-top:.6rem;font-weight:300;">Formally validated across data management, cloud, BI, and machine learning.</p>
+      <div class="certs-grid">
+        <div class="cert-card feat"><div class="cert-ico">🏅</div><div><div class="cert-name">CDMP — Certified Data Management Professional</div><div class="cert-org b">DAMA International · 2024</div></div></div>
+        <div class="cert-card"><div class="cert-ico">🔷</div><div><div class="cert-name">Fabric Analytics Engineer Associate</div><div class="cert-org b">Microsoft · 2024</div></div></div>
+        <div class="cert-card"><div class="cert-ico">📊</div><div><div class="cert-name">Power BI Data Analyst Associate</div><div class="cert-org b">Microsoft · 2024</div></div></div>
+        <div class="cert-card"><div class="cert-ico">☁️</div><div><div class="cert-name">Azure Data Scientist Associate</div><div class="cert-org b">Microsoft · 2023</div></div></div>
+        <div class="cert-card"><div class="cert-ico">🎓</div><div><div class="cert-name">Data Science Professional Certificate</div><div class="cert-org">IBM — Coursera · 2019</div></div></div>
+        <div class="cert-card"><div class="cert-ico">🏛</div><div><div class="cert-name">M.Sc. Computer Engineering</div><div class="cert-org">UET Taxila · 2015 · GPA 3.31</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 8: CONTACT -->
+  <section class="scene" id="scene-contact" data-scene="8">
+    <div class="contact-inner scene-inner">
+      <div class="eyebrow" style="justify-content:center;color:var(--em)">Let's Connect</div>
+      <h2 class="display-title">Ready for <em>Strategic Impact</em></h2>
+      <p>Currently based in Riyadh. Open to senior data science leadership, finance analytics, and advanced ML engineering roles across GCC and globally.</p>
+      <div class="c-links">
+        <a href="mailto:saad.naveed79@gmail.com" class="c-btn c-btn-blue">Hire Saad →</a>
+        <a href="https://linkedin.com/in/m-saad-naveed" target="_blank" class="c-btn c-btn-out">LinkedIn</a>
+        <a href="https://github.com/possiblecode" target="_blank" class="c-btn c-btn-out">GitHub</a>
+      </div>
+      <div class="contact-meta">+966 576 655 444</div>
     </div>
   </section>
 
@@ -255,76 +571,113 @@ html, body {
 
 <script>
 const container = document.getElementById('snap-container');
-const scenes = document.querySelectorAll('.scene');
-const dots = document.querySelectorAll('.pdot');
-let currentScene = 0;
+const scenes    = document.querySelectorAll('.scene');
+const dots      = document.querySelectorAll('.pdot');
+const topnav    = document.getElementById('topnav');
+let currentScene = 0, chartsBuilt = false, skillsAnimated = false;
 
 function activateScene(idx) {
-  scenes.forEach(s => s.classList.remove('active'));
-  dots.forEach(d => d.classList.remove('active'));
+  scenes.forEach((s,i) => { s.classList.remove('active','exit-up'); if(i<idx) s.classList.add('exit-up'); });
   scenes[idx].classList.add('active');
-  dots[idx].classList.add('active');
+  dots.forEach(d => d.classList.remove('active'));
+  if(dots[idx]) dots[idx].classList.add('active');
+  if(idx===1) animateCounters();
+  if(idx===5 && !chartsBuilt){ buildCharts(); chartsBuilt=true; }
+  if(idx===6 && !skillsAnimated){ animateSkillBars(); skillsAnimated=true; }
+  if(idx===0) { document.getElementById('heroInner').classList.add('active'); buildSkillsRadar(); }
   currentScene = idx;
 }
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-      activateScene(parseInt(entry.target.dataset.scene));
+setTimeout(() => activateScene(0), 120);
+
+new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting && e.intersectionRatio >= 0.5){
+      const idx = parseInt(e.target.dataset.scene);
+      if(idx !== currentScene) activateScene(idx);
     }
   });
-}, { threshold: 0.5 });
+}, { root: container, threshold: 0.5 }).observe || (() => {})();
 
-scenes.forEach(s => observer.observe(s));
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting && e.intersectionRatio >= 0.5){
+      const idx = parseInt(e.target.dataset.scene);
+      if(idx !== currentScene) activateScene(idx);
+    }
+  });
+}, { root: container, threshold: 0.5 });
+scenes.forEach(s => obs.observe(s));
 
-function goTo(idx) {
-  scenes[idx].scrollIntoView({ behavior: 'smooth' });
+function goTo(idx){ scenes[idx].scrollIntoView({behavior:'smooth'}); return false; }
+
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const t = +el.dataset.count; let n=0; const step=t/55;
+    const iv=setInterval(()=>{ n+=step; el.textContent=n>=t?(clearInterval(iv),t):Math.floor(n); },22);
+  });
 }
 
-// ── CHART IMPLEMENTATION ──
-const blue = '#3B82F6', emerald = '#10B981';
+function animateSkillBars() {
+  document.querySelectorAll('.s-fill').forEach((bar,i) => {
+    setTimeout(() => bar.style.width = bar.dataset.w+'%', i*120);
+  });
+}
 
-new Chart(document.getElementById('radarChart'), {
-  type: 'radar',
-  data: {
-    labels: ['ML Engineering', 'Finance Analytics', 'Credit Risk', 'Data Governance', 'Python/SQL', 'MLOps'],
-    datasets: [{
-      label: 'Proficiency',
-      data: [90, 95, 92, 85, 95, 82],
-      backgroundColor: 'rgba(59, 130, 246, 0.2)',
-      borderColor: blue,
-      borderWidth: 2,
-      pointBackgroundColor: blue
-    }]
-  },
-  options: {
-    plugins: { legend: { display: false } },
-    scales: { r: { grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' }, ticks: { display: false }, pointLabels: { color: '#94A3B8', font: { size: 11 } } } }
-  }
-});
+const blueA='rgba(59,130,246,', emA='rgba(16,185,129,';
+let skillRadarBuilt=false;
+function buildSkillsRadar(){
+  if(skillRadarBuilt) return; skillRadarBuilt=true;
+  new Chart(document.getElementById('skillsRadar'),{
+    type:'radar',
+    data:{
+      labels:['Finance Analytics','ML / AI','Credit Risk','BI / Dashboards','Python & SQL','Cloud & MLOps','Stakeholder Mgmt','Data Governance'],
+      datasets:[{data:[95,90,92,88,93,82,85,85],
+        backgroundColor:blueA+'0.08)',borderColor:blueA+'0.7)',
+        borderWidth:2,pointBackgroundColor:'#3B82F6',pointRadius:4}]
+    },
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{r:{min:60,max:100,ticks:{display:false},
+        grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.05)'},
+        pointLabels:{color:'#64748B',font:{family:"'Plus Jakarta Sans'",size:9.5}}}}}
+  });
+}
 
-new Chart(document.getElementById('barChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Accuracy', 'Retention', 'Fraud Reduction', 'Ops Efficiency'],
-    datasets: [{
-      data: [92, 35, 65, 20],
-      backgroundColor: [blue, emerald, blue, emerald],
-      borderRadius: 6
-    }]
-  },
-  options: {
-    plugins: { legend: { display: false } },
-    scales: { 
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94A3B8' } },
-        x: { ticks: { color: '#94A3B8' } }
-    }
-  }
-});
+function buildCharts(){
+  new Chart(document.getElementById('radarChart'),{
+    type:'radar',
+    data:{
+      labels:['Finance Analytics','Machine Learning','Credit Risk','BI & Reporting','Python / SQL','Cloud / MLOps','Stakeholder Comms','Data Governance'],
+      datasets:[{data:[95,90,92,88,93,82,85,85],
+        backgroundColor:blueA+'0.12)',borderColor:blueA+'0.85)',
+        borderWidth:2,pointBackgroundColor:'#3B82F6',pointRadius:4}]
+    },
+    options:{responsive:true,animation:{duration:1200},plugins:{legend:{display:false}},
+      scales:{r:{min:60,max:100,ticks:{display:false},
+        grid:{color:'rgba(255,255,255,.07)'},angleLines:{color:'rgba(255,255,255,.06)'},
+        pointLabels:{color:'#94A3B8',font:{family:"'Plus Jakarta Sans'",size:10}}}}}
+  });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowDown' && currentScene < scenes.length - 1) goTo(currentScene + 1);
-  if (e.key === 'ArrowUp' && currentScene > 0) goTo(currentScene - 1);
+  new Chart(document.getElementById('barChart'),{
+    type:'bar',
+    data:{
+      labels:['Default\nAccuracy','Churn\nReduction','Portfolio\nGrowth','Fraud\nCut','Ops\nEfficiency','CTR\nLift'],
+      datasets:[{data:[92,35,50,65,20,15],
+        backgroundColor:[blueA+'0.8)',emA+'0.8)',blueA+'0.65)',emA+'0.65)',blueA+'0.75)',emA+'0.55)'],
+        borderRadius:6}]
+    },
+    options:{responsive:true,animation:{duration:1200},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}%`}}},
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#64748B',font:{size:9}}},
+        y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#64748B',callback:v=>v+'%',font:{size:9}},min:0,max:100}
+      }}
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowDown' && currentScene<scenes.length-1) goTo(currentScene+1);
+  if(e.key==='ArrowUp'   && currentScene>0)               goTo(currentScene-1);
 });
 </script>
 </body>
