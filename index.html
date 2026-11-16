@@ -618,8 +618,7 @@ function animateSkillBars() {
 const blueA='rgba(59,130,246,', emA='rgba(16,185,129,';
 
 function buildSkillsRadar(){
-  if(skillRadarBuilt || typeof Chart === 'undefined') return;
-  skillRadarBuilt=true;
+  if(skillRadarBuilt) return; skillRadarBuilt=true;
   new Chart(document.getElementById('skillsRadar'),{
     type:'radar',
     data:{
@@ -636,7 +635,6 @@ function buildSkillsRadar(){
 }
 
 function buildCharts(){
-  if(typeof Chart === 'undefined') return;
   new Chart(document.getElementById('radarChart'),{
     type:'radar',
     data:{
