@@ -618,7 +618,8 @@ function animateSkillBars() {
 const blueA='rgba(59,130,246,', emA='rgba(16,185,129,';
 
 function buildSkillsRadar(){
-  if(skillRadarBuilt) return; skillRadarBuilt=true;
+  if(skillRadarBuilt || typeof Chart === 'undefined') return;
+  skillRadarBuilt=true;
   new Chart(document.getElementById('skillsRadar'),{
     type:'radar',
     data:{
@@ -635,6 +636,7 @@ function buildSkillsRadar(){
 }
 
 function buildCharts(){
+  if(typeof Chart === 'undefined') return;
   new Chart(document.getElementById('radarChart'),{
     type:'radar',
     data:{
@@ -652,13 +654,7 @@ function buildCharts(){
   new Chart(document.getElementById('barChart'),{
     type:'bar',
     data:{
-      labels:['Revenue
-Forecast Acc.','Default
-Accuracy','Fraud
-Cut','Portfolio
-Growth','Churn
-Cut','Engagement
-Lift'],
+      labels:[['Revenue','Forecast Acc.'],['Default','Accuracy'],['Fraud','Cut'],['Portfolio','Growth'],['Churn','Cut'],['Engagement','Lift']],
       datasets:[{data:[98,92,65,50,35,25],
         backgroundColor:[blueA+'0.85)',emA+'0.8)',blueA+'0.7)',emA+'0.7)',blueA+'0.75)',emA+'0.65)'],
         borderRadius:6}]
